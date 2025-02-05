@@ -1,0 +1,93 @@
+@media (max-width:1200px){
+    .contentLeft-Right{
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .partingLine{
+        display: none;
+    }
+
+    .contentRight{
+        margin-top: 16px;
+    }
+
+    .footerTask{
+        margin-top: 24px;
+        padding: 0px 0px 55px 96px;
+    }
+
+
+    
+    
+}
+
+@media (max-width:950px){
+    .textButtonsContainer{
+        text-align: center;
+    }
+
+    .cancelBtn,.createCheckBtn{
+        width: unset;
+    }
+
+    .createText{
+        width: unset;
+        height: unset;
+    }
+}
+
+
+@media (max-width:800px){
+    .contentAddTask{
+        left: 0;
+        width: 100vw;
+        top: 80px;
+        height: calc(100vh - 160px);
+    }
+
+    .addTaskHeadline{
+        padding-top: 24px;
+        padding-left: 24px;
+        font-size: 46px;
+
+    }
+
+    .contentLeft-Right{
+        padding-left: 24px;
+        margin-top: 24px;
+        padding-right: 0;
+        width: calc(100vw - 60px);
+
+    }
+
+    .footerTask{
+        padding-left: 24px;
+        width: calc(100vw - 60px);
+
+    }
+
+    .cancelBtn{
+        display: none;
+    }
+}
+
+@media(max-width:400px){
+    .prioButtonContainer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inputTitle,textarea,.inputContacts,.inputMonth,.subtaskText,.selectTaskCategory{
+        font-size: 16px;
+    }
+
+    .subtaskText{
+        width: 100%;
+    }
+
+    .createText{
+        font-size: 16px;
+    }
+}

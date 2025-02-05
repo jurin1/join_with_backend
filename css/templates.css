@@ -1,0 +1,259 @@
+body{
+    margin: 0;
+    overflow-x: hidden;
+    font-family: "Inter", sans-serif;
+    
+}
+
+.headerBox{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    z-index: 1;
+}
+
+header{
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 40px 10px 348px;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+
+.headerLinkPopUp{
+    height: 158px;
+    width: 150px;
+    position: absolute;
+    top: 96px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2A3647;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 10px;
+    margin-right: 12px;
+
+    
+
+}
+
+.headerLinks{
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    height: 46px;
+    width: 130px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 24px;
+    font-size: 16px;
+    font-family: 'Inter',sans-serif;
+    font-weight: 400;
+ 
+}
+
+.headerLinks:hover{
+    background-color: #2A3D59;
+}
+
+.headerLinksContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+.joinlogoHeader{
+    width: 32px;
+    height: 39px;
+}
+
+
+.headlineHeader{
+    width: 319px;
+    height: 24px;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 400;
+
+}
+
+.helpIcon{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.helpIcon:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.user{
+    width: 56px;
+    border: 3px solid #2A3647;
+    border-radius: 56%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user:hover{
+    background-color: #E1E5EC;
+    cursor: pointer;
+
+}
+
+.userText{
+color: #29ABE2;
+}
+
+.headerIcons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 104px;
+    height: 56px;
+}
+
+.sideBarBox{
+    position: fixed;
+    width: 232px;
+    height: 100vh;
+    background-color: #2A3647;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.sidebar-container{
+   height: 100%;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-between;
+   padding: 64px 0px;
+}
+
+.sideBarLinks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 229px;
+    width: 232px;
+    gap: 15px;
+}
+
+.links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 46px;
+    gap: 8px;
+    width: 232px;
+    color: white;
+    text-decoration: none;
+    background-color: #2A3647;
+
+}
+
+.links:hover{
+    background-color:#2A3D59 ;
+}
+
+
+.link-text{
+font-family: "Inter Regular",sans-serif;
+font-size: 16px;
+font-weight: 400;
+line-height: 19px;
+letter-spacing: 0em;
+text-align: center;
+
+}
+
+
+.linksBottom{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.privacy,.legal{
+    width: 232px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.linksBottomStyle{
+    color:#A8A8A8;
+    text-decoration: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 35px;
+    padding-left: 56px;
+    
+}
+
+.linksBottomStyle:hover{
+    color: rgb(41, 171, 226);
+    
+
+}
+
+.link-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 110px;
+    gap: 8px;
+}
+
+.joinlogo{
+    width: 100px;
+    height: 122px;
+}
+
+.img-sideBar{
+    width: 30px;
+    height: 30px;
+}
+
+.active-link {
+    background-color: black; 
+    color: #fff; 
+  }
+
+.d-none{
+    display: none;
+}
+.active{
+    background-color: rgba(0, 0, 0, 0.1);
+    }

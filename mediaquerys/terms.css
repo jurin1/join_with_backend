@@ -1,0 +1,23 @@
+@media (max-width:800px){
+    .bodyTerms{
+        left: 0;
+        top: 80px;
+        padding: 55px 24px 110px 24px;
+    
+    }
+}
+
+
+
+@media (max-width:550px){
+    .bodyTerms h1{
+        font-size: 38px;
+    }
+}
+
+
+@media (max-width:400px){
+    .bodyTerms h1{
+        font-size: 28px;
+    }
+}

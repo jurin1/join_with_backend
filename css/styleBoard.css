@@ -1,0 +1,697 @@
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d1d1d1;
+  border-radius: 100vw;
+  margin-block: 0.1em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a09c9c;
+  border-radius: 100vw;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+main {
+  position: absolute;
+  top: 96px;
+  left: 232px;
+  height: calc(100vh - 96px);
+  width: calc(100vw - 232px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.plusAddTaskMobile {
+  width: 40px;
+  height: 40px;
+}
+
+.boardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.headlineBoard {
+  font-size: 61px;
+  font-weight: bold;
+  margin-left: 64px;
+}
+
+.findTask {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 64px;
+  gap: 32px;
+}
+
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  width: 280px;
+  border: solid 1px #a8a8a8;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 8px 16px 8px 16px;
+}
+
+.searchBar > input {
+  border: none;
+  width: 200px;
+  color: #a8a8a8;
+}
+
+.searchBar > input:focus {
+  outline: none;
+}
+
+.searchBar > .btn-search {
+  border: none;
+  background: none;
+}
+
+.btn-AddTask {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 160px;
+  height: 48px;
+  border: solid 1px #2a3647;
+  border-radius: 10px;
+  padding: 8px 16px 8px 16px;
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #2a3647;
+  gap: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-AddTask:hover {
+  background-color: #29abe2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.btn-AddTask > svg > path {
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+  z-index: 3;
+}
+
+.listOfKanban {
+  display: flex;
+  justify-content: space-evenly;
+  width: 1208px;
+}
+
+.addKanban {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 252px;
+}
+
+.addKanban > svg {
+  width: 16px;
+  height: 16px;
+  border: solid 2px #2a3647;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.addKanban > span {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(66, 82, 110);
+}
+
+.boardDistribution {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-left: 64px;
+  width: calc(100vw - 296px);
+  padding-bottom: 30px;
+}
+
+.column {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 16px;
+  width: 252px;
+  margin-top: 20px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 220px;
+  border-radius: 24px;
+  box-shadow: 0px 1px 10px 3px #00000014;
+  padding: 16px;
+  margin: 35px 0;
+}
+
+.cards:hover{
+  cursor: pointer;
+  box-shadow: inset 0px 0px 10px 3px #00000014;
+}
+
+.empty {
+  border-radius: 10px;
+  border: dotted 1px #161616;
+  padding: 16px;
+  width: 220px;
+  background-color: #a8a8a8;
+  margin-top: 35px;
+}
+
+.empty > span {
+  color: #e7e7e7;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.labelsBoardCard {
+  font-size: 16px;
+  font-weight: 400;
+  padding: 4px 16px 4px 16px;
+  margin: 0;
+  border-radius: 8px;
+  height: fit-content;
+  color: #fff;
+}
+
+.userStory{
+  background-color: #0038ff;
+}
+
+.technicalTask{
+  background-color: #00880b;
+}
+
+.content {
+  margin: 10px 0;
+}
+
+.content > h3 {
+  line-break: auto;
+  height: auto;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2a3647;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.content > span {
+  font-size: 16px;
+  font-weight: 400;
+  color: #a8a8a8;
+  overflow: auto;
+  display: block;
+  max-height: 200px;
+  white-space: pre-line;
+}
+
+.progressBar {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progressBar > span {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.containerProfile {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imgProfile {
+  margin-right: -10px;
+}
+
+.labelProfile {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 220px;
+}
+
+.overlayCard {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  height: 80%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 525px;
+  padding: 48px 18px 48px 40px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 4px 0px #00000029;
+  background-color: #f6f7f8;
+}
+
+.contentEditCard{
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  width: 100%;
+}
+
+
+
+.labelContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.overlayCard > .labelContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.overlayContent {
+  margin: 24px 0;
+}
+
+.overlayContent > h3 {
+  line-break: auto;
+  font-size: 61px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.overlayContent > span {
+  line-break: auto;
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+}
+
+.overlayDate {
+  display: flex;
+}
+
+.overlayDate > span:nth-child(2) {
+  margin-left: 10px;
+  color: #000;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.overlayDate > span:nth-child(1) {
+  color: #2a3647;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.overlayPriority {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 24px 0px;
+}
+
+.overlayPriority > span:nth-child(2) {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  font-weight: 400;
+  font-size: 20px;
+  color: #000;
+}
+
+.overlayPriority > span:nth-child(1) {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 20px;
+  color: #2a3647;
+}
+
+.containerProfileName {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.containerProfileName > span {
+  font-weight: 400;
+  font-size: 20px;
+  color: #2a3647;
+}
+
+.profileName {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 8px 16px;
+  color: #000;
+  font-weight: 400;
+  font-size: 19px;
+}
+
+.profileName > span {
+  margin-left: 10px;
+}
+
+.subtasks {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.subtasks > span {
+  font-weight: 400;
+  font-size: 20px;
+  color: #2a3647;
+}
+
+.subtasks > div > ul > li {
+  list-style: none;
+  padding: 6px 16px 6px 16px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+input[type="checkbox"]:before {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #555555;
+  border-radius: 3px;
+  background-color: white;
+}
+
+.subtasks > div > ul {
+  padding-inline-start: 0;
+}
+
+.btn-close {
+  background-color: #f6f7f8;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-close svg:hover{
+  background-color: #eeeeee;
+  border-radius: 56px;
+}
+
+.dropWindow {
+  height: 100%;
+  min-height: 80px;
+  background-color: white;
+  border-radius: 24px;
+}
+
+.d-none {
+  display: none;
+}
+
+.overview {
+  background-color: rgba(85, 85, 85, 0.145);
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteUedit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 90%;
+}
+
+.delete {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 15px;
+  color: #2a3647;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.delete:hover,.delete:hover path,.edit:hover,.edit:hover path,.deleteEdit:hover path, .deleteEdit:hover{
+  color: #29abe2;
+  fill: #29abe2;
+  cursor: pointer;
+}
+
+
+
+.edit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #2a3647;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.deleteCard {
+  cursor: pointer;
+}
+
+
+
+.deleteEdit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #2a3647;
+  font-size: 16px;
+  font-weight: 400;
+  width: 85%;
+}
+
+.headline {
+  display: flex;
+  flex-direction: column;
+  width: 445px;
+}
+
+.headline > span {
+  font-size: 20px;
+  font-weight: 400;
+  color: #2a3647;
+}
+
+.headline > span {
+  font-size: 20px;
+  font-weight: 400;
+  color: #2a3647;
+}
+
+.textarea {
+  display: flex;
+  flex-direction: column;
+  width: 445px;
+}
+
+.textarea > span {
+  font-size: 20px;
+  font-weight: 400;
+  color: #2a3647;
+}
+
+.dueDate {
+  display: flex;
+  flex-direction: column;
+  width: 445px;
+}
+
+.dueDate > span {
+  font-size: 20px;
+  font-weight: 400;
+  color: #2a3647;
+}
+
+.editDropdown {
+  display: flex;
+  flex-direction: column;
+  width: 445px;
+}
+
+.editDropdown > span {
+  font-size: 20px;
+  font-weight: 400;
+  color: #2a3647;
+}
+
+.overlayCardEdit {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.onsubmitEdit {
+  width: 89px;
+  height: 57px;
+  padding: 16px;
+  gap: 4px;
+  background-color: #2a3647;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 700;
+}
+.submitEdit {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.onsubmitEdit:hover{
+  background-color: #29abe2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+}
+
+.progress-container {
+  width: 128px;
+  height: 8px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0;
+  height: 8px;
+  background-color: #4589ff;
+  color: #f4f4f4;
+  text-align: center;
+
+  border-radius: 16px;
+  transition: width 0.3s ease-in-out;
+}
+
+.overlayCardEditForm {
+  width: 85%;
+}
+
+.content span {
+  line-break: auto;
+  overflow: hidden;
+  display: block;
+  max-height: 80px;
+  white-space: pre-line;
+}
+
+.overlayAddTask {
+  width: unset !important;
+  padding: 0 !important;
+  background-color: unset !important;
+  overflow-y: unset !important;
+}
+.overlayAddTaskBorder {
+  width: unset !important;
+  padding: 18px !important;
+}
+
+.closeTask {
+  cursor: pointer;
+  margin: 0.67em;
+}
+
+.closeTask:hover{
+  background-color: #eeeeee;
+  border-radius: 56px;
+  
+}
+
+.assignedProfileName,.unsortedListOfSubtask{
+    max-height: 110px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.drag-area-highlight {
+  background-color: rgba(224, 223, 223, 0.601);
+  min-height: 250px;
+  min-width: 250px;
+}
+
+.overTaskWidth{
+  width: calc(100% - 32px) !important;
+}
+
+.forMobileDrag {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mobileCategoryOn {
+  background-color: #e6e6e6b4;
+  border-radius: 8px;
+  padding: 5px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.mobileCategoryOn:hover{
+  cursor: pointer;
+  background-color: #cfceceb4;
+}
+
+.categoryOpenMobile {
+  display: none;
+  border-radius: 2px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.mobileArrow {
+display: none;
+}

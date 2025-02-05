@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/scripts/script.js"></script>
+    <script src="/scripts/storage.js"></script>
+    <script src="/scripts/summaryHTML.js"></script>
+    <script src="/scripts/summary.js"></script>
+    <link rel="stylesheet" href="/css/summaryStyle.css" />
+    <link rel="stylesheet" href="/mediaquerys/summary.css" />
+    <link rel="stylesheet" href="/mediaquerys/joinsidebar.css" />
+    <link rel="stylesheet" href="/css/templates.css" />
+    <link rel="stylesheet" href="/mediaquerys/joinsidebar.css">
+    <link rel="stylesheet" href="/mediaquerys/header.css">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="icon" type="image/x-icon" href="/assets/img/join.png">
+    <title>summary</title>
+  </head>
+<body onload="renderSummary()">
+
+  <div class="sideBarBox" w3-include-html="/assets/templates/join_side_bar.html"></div>
+  <div class="headerBox" w3-include-html="/assets/templates/header.html"></div>
+
+  <div id="welcomePopup" class="welcomePopupCSS d-none">
+    <p id="greetingPopup"></p>
+    <p id="greetingNamePopup"></p>
+  </div>
+<section class="summaryMainContainer">
+  <div class="contentLeft">
+    <div class="headline">
+        <h2>Join 360</h2>
+        <div class="vector"></div>
+        <p>Key Metrics at a Glance</p>
+        <div class="vectorMobile d-none"></div>
+    </div>
+
+  <div id="bodySummaryID">
+    
+  </div>
+</div>
+<div class="content-right">
+    <div class="greetings">
+      <p id="greeting"></p>
+      <p id="greetingName"></p>
+    </div>
+</div>
+</section>
+</body>
+</html>
