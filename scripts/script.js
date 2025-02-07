@@ -51,9 +51,9 @@ async function load_contacts_from_webstorage(){
  * Fetches tasks for a specific user from storage.
  * @param {string} userID - The user ID for which tasks are being loaded.
  */
-async function loadTasks(userID){
+async function loadTasks(){
   let userTask = await getItem(`tasks`);
-  tasks = JSON.parse(userTask.data.value || '{}');
+  tasks = JSON.parse(userTask.data || '{}');
   return tasks || [];
 }
 
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
   contactElements.forEach(element => {
       element.addEventListener('click', (event) => {
           const { initials, bgColor, name, checkboxId } = element.dataset; 
-          toggleContactSelection(initials, bgColor, name, checkboxId, event);
+           toggleContactSelection(initials, bgColor, name, checkboxId, event);
       });
   });
   render();

@@ -1,7 +1,7 @@
 
 function assignedToHTML(contact, initials, isChecked) {
   const checkedAttribute = isChecked ? 'checked' : '';
-  const checkboxId = `assignedToContact_${contact.name.replace(/\s+/g, '_')}`;
+  const checkboxId = `${contact.id}`;
 
   return `
   <div class="assignedContactsContainer" onclick="toggleContactSelection('${initials}', '${contact.bgColor}', '${contact.name}', '${checkboxId}', event)">
@@ -10,7 +10,7 @@ function assignedToHTML(contact, initials, isChecked) {
         <div class="assignedLetters" style="background-color: ${contact.bgColor}">${initials}</div>
         <span>${contact.name}</span>
       </div>
-      <input id="${checkboxId}" type="checkbox" class="hidden-checkbox" ${checkedAttribute} onclick="event.stopPropagation()">
+      <input id="${checkboxId}" type="radio" name="assignContact" class="hidden-checkbox" ${checkedAttribute} onclick="handleCheckboxClick(this.id, '${contact.name}')">
     </div>
   </div>`;
 }

@@ -1,4 +1,5 @@
 let timeOfDay = ["Good Morning,", "Good Afternoon,", "Good Evening,"];
+const categories = ["todo", "progress", "feedback", "done"];
 let greeting = "";
 let nameUser = localStorage.getItem("name");
 let summaryTask = [];
@@ -6,7 +7,7 @@ let todo = [];
 let progress = [];
 let feedback = [];
 let done = [];
-let howManyTasks = [];
+let allTasksCount = [];
 let urgent = [];
 let upcomingDate = [];
 
@@ -14,15 +15,13 @@ let upcomingDate = [];
  * Renders the summary page by loading tasks, setting greetings based on the time of day, and displaying relevant task information.
  */
 async function renderSummary(){
-    summaryTask = await loadTasks(userID);
-    console.log(userID);
-    console.log(summaryTask);
+    summaryTask = await getItem("tasks");
+    allTasksCount = summaryTask.length;
+
     checkWelcomePopup(); 
     hourCheck();
-        
-    takeInfoSummary(summaryTask);
-    prioritySummary(summaryTask);
-    parseDate(summaryTask);
+    summeryTasks();    
+
     bodySummary();
     addActiveStyle(1);
 }
@@ -101,58 +100,30 @@ function welcomeSummary(){
  * Extracts and categorizes task information from the loaded task data for display in the summary.
  * @param {Array} summaryTask - The array of tasks to summarize.
  */
-async function takeInfoSummary(summaryTask) {
-    todo = [];
-    progress = [];
-    feedback = [];
-    done = [];
-    const categories = ['todo', 'progress', 'feedback', 'done'];
-    summaryTask.forEach(taskInfo => {
+async function summeryTasks() {
 
-        if (categories.includes(taskInfo.category)) {
-            switch (taskInfo.category) {
-                case 'todo':
-                    todo.push(taskInfo);
-                    break;
-                case 'progress':
-                    progress.push(taskInfo);
-                    break;
-                case 'feedback':
-                    feedback.push(taskInfo);
-                    break;
-                case 'done':
-                    done.push(taskInfo);
-                    break;
-            }
-        }
-    });
-    howManyTasks = todo.length + progress.length + feedback.length + done.length;
+  summaryTask.forEach((taskInfo) => {
+    if (taskInfo.status === "todo") {
+      todo.push(taskInfo);
+    } else if (taskInfo.status === "progress") {
+      progress.push(taskInfo);
+    } else if (taskInfo.status === "feedback") {
+      feedback.push(taskInfo);
+    } else if (taskInfo.status === "done") {
+      done.push(taskInfo);
+    }
+  });
 }
 
-/**
- * Filters tasks by priority to identify urgent tasks for the summary.
- * @param {Array} summaryTask - The array of tasks to check for urgency.
- */
-function prioritySummary(summaryTask) {
-    summaryTask.forEach(taskInfo => {
-        if (taskInfo.priority === 0) {
-            urgent.push(taskInfo);
-        }
-    });
-}
+
 
 /**
  * Parses and sorts task dates to find the nearest upcoming task date for the summary.
  * @param {Array} summaryTask - The array of tasks to parse for upcoming dates.
  */
-function parseDate(summaryTask) {
-    let filteredCards = summaryTask.filter(card => card.priority === 2 && !isNaN(new Date(card.date).getTime()));
-    let sortedCards = filteredCards.sort((a, b) => new Date(a.date) - new Date(b.date));
-    let earliestCard = sortedCards[0];
-
-    if (earliestCard) {
-        upcomingDate.push(earliestCard.date);
-    }
+async function parseDate() {
+    let nextTask = await getItem("urgent_tasks");
+    return nextTask;
 }
 
 /**

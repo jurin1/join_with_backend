@@ -6,7 +6,8 @@ let editingSubtaskIndex = -1;
 let selectedCategoryId = null;
 let selectedContactDetails = [];
 let newcategoryTask = [];
-let contacts = {};
+let contacts = [];
+let assignedContact;
 
 
 /**
@@ -15,7 +16,8 @@ let contacts = {};
  */
 async function initTasks(){
   render();
-  loadTasks(userID);
+  contacts = await load_contacts_from_webstorage();
+  // loadTasks(userID);
   
 }
 
@@ -42,15 +44,27 @@ function activForm(event) {
  * @param {Event} event - The triggering event.
  */
 async function createTask(event) {
-  preventDefaultBehavior(event);
-  const newCategory = await createAndLogNewCategory();
   
-  const newTask = createNewTaskObject(newCategory);
-  await addTaskAndSave(newTask);
-  await initializeUserTasks(newTask);
+  // const newCategory = await createAndLogNewCategory();
+  // const newTask = createNewTaskObject(newCategory);
+ body = await getTaskValue(event)
+  setItem('tasks', body);
+
   resetInputFields();
-  await updateTasksAndRedirect();
+
 }
+
+async function getTaskValue(event) {
+   preventDefaultBehavior(event);
+
+  headline = getElementById("enterTitle").value;
+  text = getElementById("enterDescription").value;
+  due_date = getElementById("enterDate").value;
+  priority = prioArray;
+  category = getElementById("selectTaskCategory").value;
+  subtask = subtasksArray;
+  contact = selectedContactDetails;
+};
 
 /**
  * Prevents the default action of an event.
@@ -68,14 +82,7 @@ async function createAndLogNewCategory() {
   return newCategoryTask[0];
 }
 
-/**
- * Initializes the task list for a user if it does not exist.
- */
-async function initializeUserTasks() {
-  if (!tasks) {
-    tasks = [];
-  }
-}
+
 
 /**
  * Retrieves the next task ID by finding the highest current ID and adding one.
@@ -124,24 +131,10 @@ function resetInputFields() {
   categoryArray = [];
 }
 
-/**
- * Adds a new task to the user's task list and saves it.
- * @param {Object} newTask - The new task to add and save.
- */
-async function addTaskAndSave(newTask) {
-  tasks.push(newTask);
-  await setItem(`tasks`, tasks);
-}
 
 
-/**
- * Updates the task list and redirects the user to the board view.
- */
-async function updateTasksAndRedirect() {
-  let todoCategory = ['todo'];
-  await setItem('newcategory', todoCategory);
-  window.location.href = 'board.html';
-}
+
+
 
 /**
  * Toggles the display of the contacts list, showing it if hidden and hiding it if shown.
@@ -150,16 +143,17 @@ function toggleContacts(event) {
   event.stopPropagation();
   let contactsBox = document.getElementById('contactsBox');
   if (contactsBox.style.display === 'none' || contactsBox.innerHTML.trim() === '') {
-    assignedTo(); 
+     assignedTo(); 
     contactsBox.style.display = 'block';
   } else {
     contactsBox.style.display = 'none'; 
   }
+
 }
 
 // This function toggles the selection of a contact when the surrounding div is clicked.
 function toggleContactSelection(initials, bgColor, name, checkboxId, event) {
-  event.stopPropagation();
+  // event.stopPropagation();
   const checkbox = document.getElementById(checkboxId);
   if (!checkbox) return;
   checkbox.checked = !checkbox.checked;
@@ -175,17 +169,24 @@ function closeContactsBoxOnClickOutside(event) {
 
 }
 
+function handleCheckboxClick(id, name) {
+  event.stopPropagation();
+  assignedContact = id;
+  const inputFeld = document.getElementById("searchContacts");
+  inputFeld.placeholder = name;
+};
+
 /**
  * Asynchronously loads contacts from web storage and displays them in the contacts box.
  */
 async function assignedTo() {
-  await load_contacts_from_webstorage();
+
 
   let contactsBox = document.getElementById('contactsBox');
   contactsBox.innerHTML = '';
 
-  if (contacts[userID] && contacts[userID].length > 0) {
-      contacts[userID].forEach(contact => {
+  if (contacts && contacts.length > 0) {
+      contacts.forEach(contact => {
           if (contact && contact.name) { 
               let initials = getInitials(contact.name); 
               let isChecked = selectedContactDetails.some(c => c.name === contact.name && c.bgColor === contact.bgColor);
@@ -475,7 +476,7 @@ function updateCategory(card, search) {
  */
 async function load_contacts_from_webstorage(){
   let contactsValue = await getItem('contacts');
-  contacts = JSON.parse(contactsValue.data.value)
+  return contactsValue;
 }
 
 /**
@@ -519,7 +520,7 @@ async function checkNewTasks(event) {
   let isDateValid = true;
   
   ifCheckTasks(isTitleValid,isDescriptionValid,isDateValid,newTitle,newDescription,newDate,event,newCategory);
-  // createTask(event);
+   createTask(event);
 }
 
 /**

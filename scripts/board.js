@@ -20,11 +20,11 @@ async function initBoard(){
  * This function asynchronously loads tasks for a user and updates each category section on the page.
  */
 async function updateHTML() {
-    cards = await loadTasks();
+    cards = await getItem("tasks");
     const categories = ['todo', 'progress', 'feedback', 'done'];
     for (const category of categories) {
        
-        let categoryElements = cards.filter(t => t['category'] === category);
+        let categoryElements = cards.filter(t => t['status'] === category);
         document.getElementById(category).innerHTML = '';
         for (let i = 0; i < categoryElements.length; i++) {
             let element = categoryElements[i];
@@ -286,7 +286,7 @@ async function updateProgressBar(element) {
             subtaskHTMLCount.innerHTML = `<span>${currentProgress}/${element.subtasks.length} Subtasks</span>`;
         }
     }
-    await setItem('tasks', tasks);
+    // await setItem('tasks', tasks);
 }
 
 /**
@@ -429,13 +429,12 @@ function assignedToEdit(element, b) {
 function assignIcon(element) {
     let assignIcon = document.getElementById(`iconProfile${element['id']}`);
     assignIcon.innerHTML = '';
-    for (let i = 0; i < element['user'].length; i++) {
-        let icon = element['user'][i];
+
         assignIcon.innerHTML +=`
         <div class="imgProfile">
-            <div class="assignedLetters" style="background-color: ${icon['bgColor']}">${icon['initials']}</div>
+            <div class="assignedLetters" style="background-color: ${element.bgColor}">${element.initials}</div>
         </div>`;
-    } 
+    
 }
 
 /**
@@ -633,7 +632,7 @@ function userTags(element) {
     let elementID = element['id'];
     let labelsID = 'labelsBoard'+elementID;
     let labelID = cards.find(card => card.id === elementID);
-    let userLabel = labelID['label'];
+    let userLabel = labelID['category'];
     let tagName = 'User Story';
     if (userLabel[0] === tagName) {
         let userLabelStory = document.getElementById(labelsID);

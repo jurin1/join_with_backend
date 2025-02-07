@@ -45,7 +45,7 @@ function bodySummaryHTML() {
     <div class="summarySelektor3" onclick="addActiveStyle(3)">
       <a href="/assets/templates/board.html" class="square-button tile hoverCube">
         <div class="frame">
-          <div ><span id="tasksSummary" class="element">${howManyTasks}</span></div>
+          <div ><span id="tasksSummary" class="element">${allTasksCount}</span></div>
           <div class="tasks-on-board"><span>Task in<br />Board</span></div>
         </div>
     </a>
