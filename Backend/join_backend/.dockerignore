@@ -1,0 +1,11 @@
+__pycache__/
+.DS_Store
+*.pyc
+*.sqlite3
+.env
+venv/
+env/
+node_modules/
+static/  # Könnte man ggf. entfernen, je nach Anwendungsfall
+media/   # Könnte man ggf. entfernen, je nach Anwendungsfall
+*data.json

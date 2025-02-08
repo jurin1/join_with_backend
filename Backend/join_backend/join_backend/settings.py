@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t1h8$s8d6f9sf^4e=m*-hb6o*1lo1((jas0k=xutk_!$@(0y=m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
+
+
+if DEBUG:
+    ALLOWED_HOSTS = []  # Alle Hostnamen im Debug-Modus akzeptieren
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",  
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",  
+        "http://127.0.0.1:8000",
+        "http://localhost:5500", 
+        "http://127.0.0.1:5500", 
+    ]
+else:
+    ALLOWED_HOSTS_PROD = os.getenv('ALLOWED_HOSTS_PROD', '').split(',')
+    ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_PROD if host.strip()]
+    CORS_ALLOWED_ORIGINS_PROD = os.getenv('CORS_ALLOWED_ORIGINS_PROD', '').split(',')
+    CORS_ALLOWED_ORIGINS = [domain.strip() for domain in CORS_ALLOWED_ORIGINS_PROD if domain.strip()]
+    CORS_ALLOW_ALL_ORIGINS = False
 
 
 # Application definition
@@ -54,10 +72,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5500",  # Ersetze mit der URL deiner Frontend-App
-    "http://127.0.0.1:5500", # Alternativ localhost
-]
+
+
+
+
+CORS_ALLOW_CREDENTIALS = True  
 
 ROOT_URLCONF = 'join_backend.urls'
 

@@ -1,10 +1,10 @@
-
 let cards = [];
 let currentDraggedElement;
 let currentChecktContact = [];
 let user = [];
 let categorys = [];
 let subtasksArrayEditTask = [];
+
 
 /**
  * Initializes the board by rendering tasks and updating the HTML layout.
@@ -13,6 +13,7 @@ let subtasksArrayEditTask = [];
 async function initBoard(){  
     render();
     updateHTML();
+    contacts = await getItem('contacts');
 }
 
 /**
@@ -43,7 +44,7 @@ async function updateHTML() {
  * @param {number} id - The ID of the card being dragged.
  */
 function startDragging(id) {
-    currentDraggedElement = cards.find(card => card.id === id);
+    currentDraggedElement = id;
 }
 
 /**
@@ -61,8 +62,13 @@ function allowDrop(ev) {
  * @param {string} category - The category to move the card to.
  */
 async function moveTo(category) {
-        currentDraggedElement.category = category;
-        await setItem('tasks', tasks)    
+    
+    body = JSON.stringify({
+        status: category,
+    });
+    updateItem('tasks', currentDraggedElement, body);
+
+        // await setItem('tasks/', tasks)    
         updateHTML();
         removeHighlight(category);
 }
@@ -112,9 +118,9 @@ function updateCategory(card, category, search) {
     card.innerHTML = '';
     for (let i = 0; i < cards.length; i++) {
         const element = cards[i];
-        if (element['category'] === category && 
-            (element['headline'].toLowerCase().includes(search) || 
-             element['text'].toLowerCase().includes(search) || 
+        if (element.status === category && 
+            (element.headline.toLowerCase().includes(search) || 
+             element.text.toLowerCase().includes(search) || 
              search === '')) {
             card.innerHTML += generateCardHTML(element); 
             userTags(element);          
@@ -286,7 +292,7 @@ async function updateProgressBar(element) {
             subtaskHTMLCount.innerHTML = `<span>${currentProgress}/${element.subtasks.length} Subtasks</span>`;
         }
     }
-    // await setItem('tasks', tasks);
+    //  await setItem('tasks/', tasks);
 }
 
 /**
@@ -331,7 +337,7 @@ async function CardEditForm(event,cardId) {
     infoArrayCard.headline = titleEdit;
     infoArrayCard.text = textareaEdit;
     infoArrayCard.date = dateEdit;
-    await setItem('tasks', tasks);
+    // await setItem('tasks/', tasks);
     currentChecktContact = [];
     closeOverview();
     updateHTML(); 
@@ -362,14 +368,12 @@ function renderSubtasksInEditPopup(card) {
  * @param {number} id - The ID of the task to delete.
  */
 async function deleteCard(id) {
-    let index = cards.findIndex((card) => card.id === id);
-    if (index !== -1) {
-        cards.splice(index, 1);
-        await setItem('tasks', tasks);
+
+        await deleteItem('tasks', id);
         updateHTML();
         closeOverview();
     }
-}
+
 
 /**
  * Updates the priority of a task based on user selection in the edit form.
@@ -410,8 +414,8 @@ function prioEdit(prioID,cardId,event){
 function assignedToEdit(element, b) {
     let assignProfil = document.getElementById(`assignedProfileName${b}`);
         assignProfil.innerHTML = '';
-    for (let i = 0; i < element['user'].length; i++) {
-        let userInitials = element['user'][i];
+    for (let i = 0; i < element.length; i++) {
+        let userInitials = element.user.id;
         assignProfil.innerHTML +=`
         <div class="profileName">
             <div class="assignedLetters" style="background-color: ${userInitials['bgColor']}">${userInitials['initials']}</div>
@@ -609,7 +613,7 @@ async function addTaskHTMLOpen(category) {
     openAddTask.innerHTML = '';
     openAddTask.innerHTML = addTaskHTML();
     openAddTask.classList.remove('d-none');
-    await setItem('newcategory', categorys); 
+     
     categorys = [];
     updateHTML();
 }
@@ -629,12 +633,9 @@ function addTaskHTMLClose() {
  * @param {Object} element - The task element to update with user tags.
  */
 function userTags(element) {
-    let elementID = element['id'];
-    let labelsID = 'labelsBoard'+elementID;
-    let labelID = cards.find(card => card.id === elementID);
-    let userLabel = labelID['category'];
+    let labelsID = 'labelsBoard'+element.id;
     let tagName = 'User Story';
-    if (userLabel[0] === tagName) {
+    if (element.category.includes(tagName)) {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('userStory');
     }else {
@@ -649,12 +650,9 @@ function userTags(element) {
  * @param {Object} element - The task element in the detail view to update with user tags.
  */
 function userTagsOver(element) {
-    let elementID = element['id'];
-    let labelsID = 'labelsBoardOver' + elementID;
-    let labelID = cards.find(card => card.id === elementID);
-    let userLabel = labelID['label'];
+     let labelsID = "labelsBoard" + element.id;
     let tagName = 'User Story';
-    if (userLabel[0] === tagName) {
+    if (element.category.includes(tagName)) {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('userStory');
     }else {
@@ -691,7 +689,7 @@ async function newCategoryHTMLOpen(categorys,event,id) {
     event.stopPropagation();
     currentDraggedElement = cards.find(card => card.id === id);
     currentDraggedElement.category = categorys;
-        await setItem('tasks', tasks);
+        // await setItem('tasks', tasks);
         updateHTML();
 }
 

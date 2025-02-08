@@ -3,20 +3,6 @@ const STORAGE_TOKEN = 'Y2B64H33P1ZFHWE7S0HF0V8EC9OTCQZV1FG8B8B5';
 const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 const API_URL = "http://localhost:8000/api/";
 
-// /**
-//  * Saves an item to remote storage with the specified key and value.
-//  * This function uses the predefined STORAGE_TOKEN and STORAGE_URL constants for authentication and the storage endpoint.
-//  * @param {string} key - The key under which the value is stored.
-//  * @param {any} value - The value to be stored.
-//  */
-// async function setItem(key, value) {
-//     const payload = { key, value, token: STORAGE_TOKEN }; 
-//     return fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload)})
-//     .then(res => res.json());
-// }
-
-
-
 
 /**
  * Saves an item to remote storage with the specified key and value.
@@ -24,7 +10,10 @@ const API_URL = "http://localhost:8000/api/";
  * @param {string} key - The key under which the value is stored.
  * @param {any} value - The value to be stored.
  */
-async function setItem(urlPath, body) {
+async function setItem(urlPath, body, logging) {
+  if (logging) {
+    console.log("setItem", urlPath, body);
+  }
     const url = `${API_URL}${urlPath}`;
   const token = localStorage.getItem("token");
   try {
@@ -55,21 +44,6 @@ async function setItem(urlPath, body) {
 
 
 
-
-/**
- * Retrieves an item from remote storage using the specified key.
- * This function constructs a request URL using the predefined STORAGE_TOKEN and STORAGE_URL constants.
- * @param {string} key - The key of the item to retrieve.
- */
-// async function getItem(key) { 
-//     const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-//     let resp = await fetch(url);
-//     let data = await resp.json(); 
-//     return data;
-
-// }
-
-
 /**
  * Retrieves an item from remote storage using the specified key.
  * This function constructs a request URL using the predefined STORAGE_TOKEN and STORAGE_URL constants.
@@ -92,7 +66,6 @@ async function getItem(urlPath) {
       }
 
       const data = await response.json();
-      console.log(url, data);
         return data; 
         
     } catch (error) {
@@ -127,7 +100,7 @@ async function updateItem(url, id, body) {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_URL}${url}/${id}/`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         Authorization: `Token ${token}`,
         "Content-Type": "application/json",
@@ -144,5 +117,67 @@ async function updateItem(url, id, body) {
     return data;
   } catch (error) {
     console.error("Error updating contact:", error);
+  }
+}
+
+async function login(body) {
+      try {
+        const response = await fetch(API_URL+'login/', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: body,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem("token", data.token); 
+          localStorage.setItem("name", data.name); 
+          localStorage.setItem("user_id", data.userID); 
+          window.location.href = "/assets/templates/summary.html"; 
+        } else {
+
+          console.error("Login failed:", data);
+          document.getElementById("invalidValue").innerHTML =
+            data.error || "Login fehlgeschlagen."; 
+        }
+      } catch (error) {
+        alert("Login fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        console.error("Login error:", error);
+      }
+}
+
+
+async function register(body) {
+  try {
+    const response = await fetch(API_URL + "register/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      window.location.href = "/assets/templates/login.html"; // Weiterleiten
+    } else {
+      console.error("Signup failed:", data);
+      document.getElementById("invalidValue").innerHTML =
+        data.error || "Signup fehlgeschlagen."; // Fehlermeldung anzeigen
+    }
+  } catch (error) {
+    alert("Signup fehlgeschlagen. Bitte versuchen Sie es erneut.");
+    console.error("Signup error:", error);
+  }
+}
+
+async function checkToken() {
+  token = localStorage.getItem("token");
+  if (token) {
+    return token;
   }
 }

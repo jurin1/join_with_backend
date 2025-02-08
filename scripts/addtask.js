@@ -8,6 +8,8 @@ let selectedContactDetails = [];
 let newcategoryTask = [];
 let contacts = [];
 let assignedContact;
+let contactId;
+let priorityText = ['urgent', 'medium', 'low'];
 
 
 /**
@@ -17,18 +19,11 @@ let assignedContact;
 async function initTasks(){
   render();
   contacts = await load_contacts_from_webstorage();
-  // loadTasks(userID);
+
   
 }
 
-/**
- * Handles the form submission for adding a new task, including validation and opening the add task modal with a default category.
- * @param {Event} event - The event object associated with the form submission.
- */
-function addTaskForm(event){
-  checkNewTasks(event);
-  addTaskHTMLOpen('todo');
-}
+
 
 /**
  * Activates the form by creating a task and applying an active style.
@@ -47,24 +42,27 @@ async function createTask(event) {
   
   // const newCategory = await createAndLogNewCategory();
   // const newTask = createNewTaskObject(newCategory);
- body = await getTaskValue(event)
-  setItem('tasks', body);
+  body = await getTaskValue();
+  setItem('tasks/', body);
 
   resetInputFields();
 
 }
 
-async function getTaskValue(event) {
-   preventDefaultBehavior(event);
+async function getTaskValue() {
 
-  headline = getElementById("enterTitle").value;
-  text = getElementById("enterDescription").value;
-  due_date = getElementById("enterDate").value;
-  priority = prioArray;
-  category = getElementById("selectTaskCategory").value;
-  subtask = subtasksArray;
-  contact = selectedContactDetails;
+  return JSON.stringify({
+    headline: document.getElementById("enterTitle").value,
+    text: document.getElementById("enterDescription").value,
+    due_date: document.getElementById("enterDate").value,
+    priority: priorityText[prioArray],
+    category: categoryArray[0],
+    subtasks: subtasksArray,
+    contact: contactId,
+  });
 };
+
+
 
 /**
  * Prevents the default action of an event.
@@ -152,12 +150,12 @@ function toggleContacts(event) {
 }
 
 // This function toggles the selection of a contact when the surrounding div is clicked.
-function toggleContactSelection(initials, bgColor, name, checkboxId, event) {
-  // event.stopPropagation();
+function toggleContactSelection(initials, bgColor, name, checkboxId, event, id) {
+   event.stopPropagation();
   const checkbox = document.getElementById(checkboxId);
   if (!checkbox) return;
   checkbox.checked = !checkbox.checked;
-  updateSelectedContacts(initials, bgColor, name, checkbox);
+  updateSelectedContacts(initials, bgColor, name, checkbox, id);
 }
 
 function closeContactsBoxOnClickOutside(event) {
@@ -203,7 +201,7 @@ async function assignedTo() {
  * @param {string} name - The name of the contact.
  * @param {HTMLInputElement} checkbox - The checkbox element that triggered the update.
  */
-function updateSelectedContacts(initials, bgColor, name, checkbox) {
+function updateSelectedContacts(initials, bgColor, name, checkbox, id) {
   let contactExistsIndex = selectedContactDetails.findIndex(c => c.name === name && c.bgColor === bgColor);
   if (checkbox.checked && contactExistsIndex === -1) {
     selectedContactDetails.push({
@@ -211,10 +209,11 @@ function updateSelectedContacts(initials, bgColor, name, checkbox) {
       bgColor: bgColor,
       initials: initials
     });
+    contactId = id;
   } else if (!checkbox.checked && contactExistsIndex !== -1) {
     selectedContactDetails.splice(contactExistsIndex, 1);
   }
-  renderSelectedContacts();
+  renderSelectedContacts(bgColor, name);
 }
 
 /**
@@ -233,15 +232,21 @@ function getInitials(name) {
  * This function iterates over the `selectedContactDetails` array and dynamically updates the DOM to display each selected contact.
  * Contacts are visually represented by their initials set against a background color, both properties derived from the contact details.
  */
-function renderSelectedContacts() {
+function renderSelectedContacts(bg_color, name) {
   let renderSelectedContacts = document.getElementById('renderSelectedContacts');
   renderSelectedContacts.innerHTML = ''; 
 
   if (selectedContactDetails && selectedContactDetails.length >= 0) {
     for (let i = 0; i < selectedContactDetails.length; i++) {
       const contact = selectedContactDetails[i];
+      renderSelectedContacts.innerHTML = "";
       renderSelectedContacts.innerHTML += `
-      <div class="renderSelectedContactdetails" style="background-color: ${contact.bgColor};"> ${getInitials(contact.name)}</div>`;
+      <div class="renderSelectedContactdetails" style="background-color: ${bg_color};"> ${getInitials(
+        name
+      )}</div>`;
+        const inputFeld = document.getElementById("searchContacts");
+        inputFeld.placeholder = name;
+
     }
   }
 }
@@ -331,6 +336,7 @@ function toggleCategorySelection(categoryId) {
  */
 
 function updateLabels(categoryId) {
+  event.stopPropagation();
   let checkbox = document.getElementById(categoryId);
   let categoryText = document.getElementById(categoryId.replace('Checkbox', '')).innerText;
   let selectTaskCategory = document.getElementById('selectTaskCategory');
@@ -355,13 +361,12 @@ function updateLabels(categoryId) {
 function addSubTask() {
   let subTaskInput = document.getElementById('addSubTasks');
   if (subTaskInput.value.trim() !== '') {
-    let newSubID = Date.now();
+
     
     subtasksArray.push({
       name: subTaskInput.value.trim(),
       done: false,
-      subID: newSubID,
-      taskID: getNextTaskId(),
+
     });
     subTaskInput.value = '';
     displaySubtasks();
@@ -503,25 +508,7 @@ function clearForm() {
   document.getElementById("requiredMessageCategory").innerHTML = "";
 }
 
-/**
- * Validates the new task's details (title, description, date, and category) before proceeding with form submission.
- * Displays appropriate messages if validation fails.
- * @param {Event} event - The event triggered by the form submission attempt.
- */
-async function checkNewTasks(event) {
-  event.preventDefault();
-  let newTitle = document.getElementById('enterTitle').value;
-  let newDescription = document.getElementById('enterDescription').value;
-  let newDate = document.getElementById('enterDate').value;
-  let newCategory = categoryArray;
-  
-  let isTitleValid = true;
-  let isDescriptionValid = true;
-  let isDateValid = true;
-  
-  ifCheckTasks(isTitleValid,isDescriptionValid,isDateValid,newTitle,newDescription,newDate,event,newCategory);
-   createTask(event);
-}
+
 
 /**
  * Performs further actions based on the validity of task details. 

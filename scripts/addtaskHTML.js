@@ -4,10 +4,10 @@ function assignedToHTML(contact, initials, isChecked) {
   const checkboxId = `${contact.id}`;
 
   return `
-  <div class="assignedContactsContainer" onclick="toggleContactSelection('${initials}', '${contact.bgColor}', '${contact.name}', '${checkboxId}', event)">
+  <div class="assignedContactsContainer" onclick="toggleContactSelection('${initials}', '${contact.bg_color}', '${contact.name}', '${checkboxId}', event,'${contact.id}')">
     <div class="assignedContactSVG">
       <div class="letterContacts">
-        <div class="assignedLetters" style="background-color: ${contact.bgColor}">${initials}</div>
+        <div class="assignedLetters" style="background-color: ${contact.bg_color}">${initials}</div>
         <span>${contact.name}</span>
       </div>
       <input id="${checkboxId}" type="radio" name="assignContact" class="hidden-checkbox" ${checkedAttribute} onclick="handleCheckboxClick(this.id, '${contact.name}')">
@@ -39,7 +39,7 @@ function assignedToHTML(contact, initials, isChecked) {
           <div class="selectCategory">
             <span id="technicalTask">Technical Task</span>
           </div>
-          <input id="technicalTaskCheckbox" type="checkbox" onchange="updateLabels('technicalTaskCheckbox')">
+          <input id="technicalTaskCheckbox" type="radio" name="category" )">
         </div>
       </div>
       <div class="categoryTaskContainer" onclick="toggleCategorySelection('userStoryCheckbox')">
@@ -47,7 +47,7 @@ function assignedToHTML(contact, initials, isChecked) {
           <div class="selectCategory">
             <span id="userStory">User Story</span>
           </div>
-          <input id="userStoryCheckbox" type="checkbox" onchange="updateLabels('userStoryCheckbox')">
+          <input id="userStoryCheckbox" type="radio" name="category") ">
         </div>
       </div>
       `;

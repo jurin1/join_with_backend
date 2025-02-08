@@ -24,14 +24,17 @@ class TaskSerializer(serializers.ModelSerializer):
         return task
 
     def update(self, instance, validated_data):
+        contact = validated_data.pop('contact', instance.contact)
+
         instance.headline = validated_data.get('headline', instance.headline)
         instance.text = validated_data.get('text', instance.text)
         instance.due_date = validated_data.get('due_date', instance.due_date)
         instance.status = validated_data.get('status', instance.status)
         instance.priority = validated_data.get('priority', instance.priority)
         instance.category = validated_data.get('category', instance.category)
-        instance.subtasks = validated_data.get('subtasks', validated_data.subtasks)
-        instance.contact = validated_data.get('contact', instance.contact)
+        instance.subtasks = validated_data.get('subtasks', instance.subtasks) 
+        instance.contact = contact
+
         instance.save()
         return instance
 

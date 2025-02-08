@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  join_backend_web:  
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /opt/stacks/join-backend:/app/  
+    #ports:
+    #  - "8000:8000" 
+    environment:
+      DJANGO_SETTINGS_MODULE: join_backend.settings
+      DEBUG: ${DJANGO_DEBUG:-False} 
+    env_file:
+      - .env 

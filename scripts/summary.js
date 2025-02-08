@@ -8,20 +8,24 @@ let progress = [];
 let feedback = [];
 let done = [];
 let allTasksCount = [];
-let urgent = [];
-let upcomingDate = [];
+let urgent;
+let upcomingDate = "No upcoming deadline";
+
 
 /**
  * Renders the summary page by loading tasks, setting greetings based on the time of day, and displaying relevant task information.
  */
-async function renderSummary(){
+async function renderSummary() {
+    getUrgendTask();
+    
     summaryTask = await getItem("tasks");
     allTasksCount = summaryTask.length;
+    earliestTask = getEarliestUrgentTask(summaryTask);
+    upcomingDate = earliestTask ? new Date(earliestTask.due_date).toLocaleDateString() : "No upcoming deadline";
 
     checkWelcomePopup(); 
     hourCheck();
     summeryTasks();    
-
     bodySummary();
     addActiveStyle(1);
 }
@@ -117,14 +121,7 @@ async function summeryTasks() {
 
 
 
-/**
- * Parses and sorts task dates to find the nearest upcoming task date for the summary.
- * @param {Array} summaryTask - The array of tasks to parse for upcoming dates.
- */
-async function parseDate() {
-    let nextTask = await getItem("urgent_tasks");
-    return nextTask;
-}
+
 
 /**
  * Updates the body of the summary page with summarized task information.
@@ -136,3 +133,31 @@ function bodySummary() {
 }
 
 
+async function getUrgendTask(){
+    let urgentTask = await getItem("urgent_tasks/");
+    urgent = urgentTask.length;
+    
+}
+
+
+
+
+
+
+function getEarliestUrgentTask(tasks) {
+    const openTasks = tasks.filter((task) => task.status !== "done");
+
+
+  if (openTasks.length === 0) {
+    return null;
+  }
+
+  const earliestTask = openTasks.reduce((earliest, task) => {
+    const taskDueDate = new Date(task.due_date);
+    const earliestDueDate = new Date(earliest.due_date);
+
+    return taskDueDate < earliestDueDate ? task : earliest;
+  });
+
+  return earliestTask;
+}

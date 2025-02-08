@@ -57,7 +57,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   width: 652px;
-  height: 390px;
+  height: 477px;
   margin: 0 auto;
   padding: 48px 115px;
   border-radius: 30px;
@@ -94,7 +94,7 @@ a:hover {
 }
 
 .headerLogin {
-  margin-top: 67px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;

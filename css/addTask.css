@@ -115,7 +115,7 @@ form textarea:focus {
   border-radius: 10px;
   border: 1px solid #d1d1d1;
   padding: 12px 16px;
-  color: #d1d1d1;
+  color: #000000;
   font-family: "Inter", sans-serif;
   font-size: 20px;
   font-weight: 400;

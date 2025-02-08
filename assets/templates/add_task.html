@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/mediaquerys/joinsidebar.css" />
     <link rel="stylesheet" href="/mediaquerys/header.css" />
     <link rel="stylesheet" href="/mediaquerys/addtTask-mediaquery.css">
+        <script src="/scripts/auth-check.js"></script>
     <script defer src="/scripts/storage.js"></script>
     <script defer src="/scripts/board.js"></script>
     <script defer src="/scripts/script.js"></script>
@@ -25,7 +26,7 @@
 
     <div class="contentAddTask"  onclick="dropDownOpen()">
       <h1 class="addTaskHeadline">Add Task</h1>
-<form  onsubmit="addTaskForm(event)" id="newTaskForm">
+<form  onsubmit="createTask(event)" id="newTaskForm">
       <div class="contentLeft-Right">
 
         <div class="contentLeft">

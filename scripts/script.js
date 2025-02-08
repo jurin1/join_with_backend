@@ -66,20 +66,20 @@ async function createTaskCategory(){
   return categorys; 
 }
 
-/**
- * Checks storage for data associated with a given key.
- * @param {string} key - The key to check in storage.
- */
-async function checkStorageData(key){
-  let valueKey = await getItem(key);
-  let parsedStorageData = JSON.parse(valueKey.data.value || '{}'); 
+// /**
+//  * Checks storage for data associated with a given key.
+//  * @param {string} key - The key to check in storage.
+//  */
+// async function checkStorageData(key){
+//   let valueKey = await getItem(key);
+//   let parsedStorageData = JSON.parse(valueKey.data.value || '{}'); 
 
-  if (Object.keys(parsedStorageData).length > 0) {
-      return [true, parsedStorageData];
-  }else {
-    return false
-  }
-}
+//   if (Object.keys(parsedStorageData).length > 0) {
+//       return [true, parsedStorageData];
+//   }else {
+//     return false
+//   }
+// }
 
 /**
  * Adds an active style to a specified link by ID and stores the selection in session storage.
@@ -213,6 +213,8 @@ function setInitials(initials) {
     localStorage.removeItem("user");
     localStorage.removeItem("name");
     sessionStorage.removeItem("welcome")
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
 
  }
 

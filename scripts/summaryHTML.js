@@ -32,7 +32,7 @@ function bodySummaryHTML() {
             <img src="/assets/img/Prio alta.svg" alt="">
           </div>
           <div class="doneCount">
-            <p id="urgentSummary">${urgent.length}<span>Urgent</span></p>
+            <p id="urgentSummary">${urgent}<span>Urgent</span></p>
           </div>
         </div>
           <div ><img src="/assets/img/vector.svg" alt=""></div>
