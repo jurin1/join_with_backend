@@ -1,10 +1,9 @@
-FROM python:3.11-slim-buster
+FROM python:3.11-slim
 
 # Aktualisiere die Paketlisten und installiere notwendige Abhängigkeiten
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    libsqlite3-dev \
-    sqlite3
+    libsqlite3-dev 
 
 # Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
@@ -20,8 +19,8 @@ COPY . .
 #COPY data.json .
 
 # Migrationen durchführen
-#RUN python manage.py makemigrations
-#RUN python manage.py migrate
+RUN python manage.py makemigrations
+RUN python manage.py migrate
 
 # Daten laden
 #RUN python manage.py loaddata data.json

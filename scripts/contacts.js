@@ -1,6 +1,6 @@
-const API_BASE_URL = "http://localhost:8000/api/";
-const CONTACTS_URL = "contacts/";
 
+const CONTACTS_URL = "contacts/";
+let contentHeight;
 let letters = [
   "A",
   "B",
@@ -127,9 +127,9 @@ async function createContactObject() {
   
     try {
     await setItem(CONTACTS_URL, body);
-    console.log("Contact successfully created!");
+    
   } catch (error) {
-    console.error("Failed to create contact:", error);
+
     alert("Error creating contact. Please check the console for details.");
   }
 }
@@ -149,9 +149,9 @@ function resetInputFields() {
  * Saves the newly created contact and displays it along with other existing contacts.
  * @param {number} contactId - The ID of the newly created contact.
  */
-function saveAndShowContacts(contactId) {
-  setItem("contacts", contacts);
-  showContacts();
+async function saveAndShowContacts(contactId) {
+  await setItem("contacts", contacts);
+  await showContacts();
   showContact(contactId);
 }
 
@@ -161,9 +161,11 @@ function saveAndShowContacts(contactId) {
 async function initContacts() {
   await load_contacts_from_webstorage();
   render();
-  showContacts();
+  await showContacts();
   screenSizeUser();
-  updateContacts();
+  await updateContacts();
+  setContentContactHeight();
+
 }
 
 /**
@@ -181,7 +183,9 @@ async function showContacts() {
         (contact) => contact["name"].charAt(0).toUpperCase() == letter
       );
       filteredContact(filteredContacts, letter);
-    }
+  }
+  
+
   }
 
 
@@ -202,7 +206,7 @@ function filteredContact(filteredContacts, letter) {
         .pop()
         .charAt(0)
         .toUpperCase();
-      const bgColor = filteredContact.bgColor;
+      const bgColor = filteredContact.bg_color;
       letterBox.innerHTML += showContactsHTML(
         filteredContact,
         bgColor,
@@ -237,13 +241,13 @@ function getLastLetter(name) {
  * Displays details of a specific contact and highlights the selected contact in the list.
  * @param {number} id - The ID of the contact to display.
  */
-function showContact(id) {
+async function showContact(id) {
   deselectAllContainers();
   selectClickedContainer(id);
   toggleMobileContactView();
   displayContactDetails();
   updateContactView(id);
-   showOverlay();
+  showOverlay();
 }
 
 /**
@@ -331,18 +335,34 @@ function showOverlay() {
  * @param {number} id - The ID of the contact to delete.
  */
 async function deleteContact(id) {
+
   const success = await deleteItem("contacts", id);
 
   if (success) {
-    // showContacts();
+    showContacts();
     document.getElementById("contactContainerContact").innerHTML = "";
-    // hideEditContactMobile();
-    // disableContactContainer();
+    hideEditContactMobile();
+    disableContactContainer();
     setTimeout(() => { popupDeleteContact(); }, 2000);
   } else {
     console.error("Fehler beim Löschen des Kontakts.");
 
   }
+}
+
+function deleteContactQuestion(id, name) {
+  let element = document.getElementById("deleteContactSure"); 
+  element.innerHTML = ""; 
+  element.innerHTML += showDeleteQuestion(name, id); 
+  element.classList.remove("d-none"); 
+}
+
+function deleteContactSure(bool, id) {
+let element = document.getElementById("deleteContactSure").classList;
+  if (bool) {
+    deleteContact(id);
+  }
+  element.add("d-none");
 }
 
 function popupDeleteContact() {
@@ -365,9 +385,10 @@ function popupDeleteContact() {
  */
 function editContact(id) {
   let addNewContactPopUp = document.getElementById("addNewContactPopUp");
-  addNewContactPopUp.innerHTML = editContactHTML(id);
-
   const selectedContact = contacts.find((contact) => contact.id === id);
+  addNewContactPopUp.innerHTML = editContactHTML(id, selectedContact.name);
+
+ 
   if (selectedContact) {
     getEditContact(selectedContact);
   }
@@ -383,7 +404,7 @@ function getEditContact(selectedContact, id) {
     .getElementById("editcontact")
     .classList.add("showOverlay-addNewContactPopUpContainer");
   document
-    .getElementById("backGroundOpacityContainer")
+    .getElementById("editbackGroundOpacityContainer")
     .classList.remove("d-none");
   document.getElementById("editname").value = selectedContact.name;
   document.getElementById("editemail").value = selectedContact.email;
@@ -432,7 +453,7 @@ function closeEditContact() {
   document
     .getElementById("editcontact")
     .classList.remove("showOverlay-addNewContactPopUpContainer");
-  document.getElementById("backGroundOpacityContainer").classList.add("d-none");
+  document.getElementById("editbackGroundOpacityContainer").classList.add("d-none");
   document.getElementById("editname").value = "";
   document.getElementById("editemail").value = "";
   document.getElementById("edittel").value = "";
@@ -450,9 +471,9 @@ async function saveEditContact(id) {
   });
 
     await updateItem("contacts", id, body);
-
-    showContacts();
-    showContact(editedContact.id);
+    await load_contacts_from_webstorage();
+    await showContacts();
+    // showContact(editedContact.id);
     closeEditContact();
   }
 
@@ -476,6 +497,7 @@ function disableContactContainer() {
   contactContainerView.style.removeProperty("width");
   document.getElementById("editContactMobile").classList.add("d-none");
   hideEditContactMobile();
+  setContentContactHeight(contentHeight);
 }
 
 /**
@@ -495,7 +517,8 @@ function changeContactView() {
   contactContainerList.classList.add("d-none");
   contactContainerView.style.display = "block";
   contactContainerView.style.width = "100vw";
-  document.getElementById("editContactMobile").classList.remove("d-none");
+  // document.getElementById("editContactMobile").classList.remove("d-none");
+  setContentContactHeight(window.innerHeight);
 }
 
 /**
@@ -504,10 +527,10 @@ function changeContactView() {
 function showEditContactMobile() {
   document
     .getElementById("editDeleteContainerMobile")
-    .classList.add("showOverlay-editDeleteContainerMobile");
+    .classList.remove("d-none");
   document
     .getElementById("editDeleteContainerMobile")
-    .classList.remove("overlay-editDeleteContainerMobile");
+    .classList.add("d-none");
 }
 
 /**
@@ -630,3 +653,39 @@ function ifCheckContact(
     createContact();
   }
 }
+
+
+
+
+function setContentContactHeight(height) {
+  const element = document.querySelector(".contentContact");
+
+  if (isMobile() & !height) {
+    const inhaltHoehe = element.offsetHeight + 150;
+    element.style.height = inhaltHoehe + "px";
+    contentHeight = inhaltHoehe;
+    console.log(inhaltHoehe);
+  } else {
+    element.style.height = height + "px";
+  }
+}
+
+
+function setPersonLogoPosition() {
+  const personLogo = document.querySelector(".personLogo");
+
+  if (isMobile()) {
+  const marginBottom = 660;
+  const scrollY = window.scrollY;
+
+  const bottomValue = marginBottom + scrollY;
+  personLogo.style.top = `${bottomValue}px`;
+ 
+  }
+
+
+
+}
+
+setInterval(setPersonLogoPosition, 300);
+ window.addEventListener('resize', setContentContactHeight); 

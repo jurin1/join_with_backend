@@ -21,7 +21,13 @@ async function renderSummary() {
     summaryTask = await getItem("tasks");
     allTasksCount = summaryTask.length;
     earliestTask = getEarliestUrgentTask(summaryTask);
-    upcomingDate = earliestTask ? new Date(earliestTask.due_date).toLocaleDateString() : "No upcoming deadline";
+    upcomingDate = earliestTask
+      ? new Date(earliestTask.due_date).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+      : "No upcoming deadline";
 
     checkWelcomePopup(); 
     hourCheck();

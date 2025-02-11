@@ -10,4 +10,5 @@ urlpatterns = [
     path('tasks/', views.TaskListCreate.as_view(), name='task-list-create'),
     path('tasks/<int:pk>/', views.TaskRetrieveUpdateDestroy.as_view(), name='task-retrieve-update-destroy'),
     path('urgent_tasks/', views.UrgentUpcomingTaskList.as_view(), name='urgent-upcoming-tasks'),
+    path('healthcheck/', views.health_check, name='health_check'),
 ]

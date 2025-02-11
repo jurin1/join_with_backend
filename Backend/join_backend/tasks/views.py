@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from .serializers import TaskSerializer, ContactSerializer, UserSerializer
 from django.utils import timezone
+from rest_framework import status
 
 
 
@@ -90,3 +91,14 @@ class UrgentUpcomingTaskList(generics.ListAPIView):
         ).exclude(status='done').order_by('due_date') # Sortiere nach Fälligkeitsdatum
 
         return queryset
+    
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def health_check(request):
+    """
+    Endpoint for health checks.
+    Returns a 200 OK status if the server is running.
+    """
+    return Response({'status': 'ok'}, status=status.HTTP_200_OK)

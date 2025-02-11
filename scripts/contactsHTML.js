@@ -64,9 +64,9 @@ function showContactsHTML(filteredContact, bgColor, letter, lastNameLetter) {
               
   
               <div class="cancelCreateContactButtons">
-                  <button id="deleteContactButton" onclick="deleteEditContact(${id})"class="cancelBtn d-inline">
+                  <button id="deleteContactButton" onclick="closeEditContact(${id})"class="cancelBtn d-inline">
                       <span class="cancelX">
-                  <p class="cancelText">Delete</p>
+                  <p class="cancelText">Cancel</p>
                   <p class="x">x</p>
                     </span>
               
@@ -116,7 +116,7 @@ function showContactsHTML(filteredContact, bgColor, letter, lastNameLetter) {
     return `
     <div id="contactContainerContact" class="contactContainerContact overlay-contactContainerContact">
       <div class="contactContainerContactIconName">
-        <div id="contactContainerContactIcon"class="contactContainerContactIcon"style="background-color: ${contact.bgColor}">${letter}${lastNameLetter}</div>
+        <div id="contactContainerContactIcon"class="contactContainerContactIcon"style="background-color: ${contact.bg_color}">${letter}${lastNameLetter}</div>
         <div class="nameEditDelete">
           <div id="contactContainerContactName"class="contactContainerContactName">${contact.name}</div>
           <div class="editDeleteContainer">
@@ -131,7 +131,7 @@ function showContactsHTML(filteredContact, bgColor, letter, lastNameLetter) {
             </svg>
             <p>Edit</p>
           </div>
-        <div onclick="deleteContact(${contact.id})"class="iconDelete">
+        <div onclick="deleteContactQuestion(${contact.id}, '${contact.name}')" class="iconDelete">
         <svg class="svgIcons"width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
              <mask id="mask0_119188_3520" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
              <rect width="24" height="24" fill="#D9D9D9"/>
@@ -160,4 +160,18 @@ function showContactsHTML(filteredContact, bgColor, letter, lastNameLetter) {
       </div>
     </div>
     `;
-  }
+}
+  
+function showDeleteQuestion(name, id) {
+    return `
+  <div style="height: 50%;">
+    <p>Are you sure to delete the contact
+      <br>
+      <p style="text-decoration: underline;text-decoration-color: green;">${name}</p>
+      </p>
+  </div>
+    <div class="deleteContactSureButtons">
+      <button onclick="deleteContactSure(true, ${id})">Yes</button>
+      <button onclick="deleteContactSure(false)">No</button>
+    </div>`;
+}

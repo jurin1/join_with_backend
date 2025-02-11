@@ -39,7 +39,7 @@ function assignedToHTML(contact, initials, isChecked) {
           <div class="selectCategory">
             <span id="technicalTask">Technical Task</span>
           </div>
-          <input id="technicalTaskCheckbox" type="radio" name="category" )">
+          <input id="technicalTaskCheckbox" type="radio" name="category" onclick="toggleCategorySelection('technicalTaskCheckbox')"">
         </div>
       </div>
       <div class="categoryTaskContainer" onclick="toggleCategorySelection('userStoryCheckbox')">
@@ -47,7 +47,7 @@ function assignedToHTML(contact, initials, isChecked) {
           <div class="selectCategory">
             <span id="userStory">User Story</span>
           </div>
-          <input id="userStoryCheckbox" type="radio" name="category") ">
+          <input id="userStoryCheckbox" type="radio" name="category") onclick="toggleCategorySelection('userStoryCheckbox')"">
         </div>
       </div>
       `;

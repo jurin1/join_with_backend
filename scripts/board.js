@@ -66,11 +66,11 @@ async function moveTo(category) {
     body = JSON.stringify({
         status: category,
     });
-    updateItem('tasks', currentDraggedElement, body);
+    await updateItem('tasks', currentDraggedElement, body);
 
         // await setItem('tasks/', tasks)    
-        updateHTML();
-        removeHighlight(category);
+    updateHTML();
+    removeHighlight(category);
 }
 
 /**

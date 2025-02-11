@@ -20,13 +20,14 @@
 }
 
 .contentContact {
-  position: fixed;
+  position: absolute;
   left: 232px;
   top: 96px;
   display: flex;
-  height: calc(100vh - 96px);
+  /* height: calc(100vh - 96px); */
   width: calc(100vw - 232px);
-  overflow-x: hidden;
+  overflow-y: auto
+
 }
 
 .addcontactContainer {
@@ -39,7 +40,7 @@
 .addContactButtonContacts{
   padding: 32px 24px;
   height: 100%;
-  overflow-y: auto;
+
 }
 
 .renderContactContainer {
@@ -801,7 +802,6 @@ input:focus {
 
 .personLogo {
   position: absolute;
-  bottom: 96px;
   right: 16px;
   width: 56px;
   height: 56px;
@@ -815,7 +815,6 @@ input:focus {
 
 .editContactMobile{
   position: absolute;
-  bottom: 96px;
   right: 16px;
   width: 56px;
   height: 56px;
@@ -904,4 +903,59 @@ text-align: left;
 
 .requiredMessage {
   color: #ff0000;
+}
+
+.deleteContactSure {
+  display: flex;
+  position: absolute;
+  background-color: #2a3647;
+  color: white;
+  width: 80%;
+  max-width: 350px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  height: 150px;
+  border-radius: 20px;
+}
+
+.deleteContactSure p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.deleteContactSureButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background-color: rgba(252, 252, 252, 0.80);
+  height: 50%;
+}
+
+.deleteContactSureButtons button {
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  margin-bottom: 5px;
+}
+
+.deleteContactSureButtons button:hover:first-child {
+  background-color: rgba(183, 13, 13, 0.45);
+  color: white  ;
+}
+
+.deleteContactSureButtons button:hover:last-child {
+  background-color: rgba(23, 108, 16, 0.45);
+  color: white;
 }

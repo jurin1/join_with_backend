@@ -264,7 +264,7 @@
     .contentContact{
       padding-left: 0;
       padding-top: 80px;
-      height: calc(100vh - 160px);
+      /* height: calc(100vh - 160px); */
       position: unset;
       width: unset;
     
@@ -356,9 +356,7 @@
     }
 
   
-    .editDeleteContainer{
-      display: none;
-    }
+
 
   }
   
