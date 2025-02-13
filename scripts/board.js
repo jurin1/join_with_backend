@@ -10,7 +10,7 @@ let subtasksArrayEditTask = [];
  * Initializes the board by rendering tasks and updating the HTML layout.
  * This function should be called when the page is loaded or when the tasks need to be refreshed.
  */
-async function initBoard(){  
+async function initBoard() {
     render();
     updateHTML();
     contacts = await getItem('contacts');
@@ -24,15 +24,15 @@ async function updateHTML() {
     cards = await getItem("tasks");
     const categories = ['todo', 'progress', 'feedback', 'done'];
     for (const category of categories) {
-       
+
         let categoryElements = cards.filter(t => t['status'] === category);
         document.getElementById(category).innerHTML = '';
         for (let i = 0; i < categoryElements.length; i++) {
             let element = categoryElements[i];
             document.getElementById(category).innerHTML += generateCardHTML(element);
             userTags(element);
-            updateProgressBar(element);        
-            assignIcon(element);  
+            updateProgressBar(element);
+            assignIcon(element);
         }
     }
     emptyCategory();
@@ -62,13 +62,13 @@ function allowDrop(ev) {
  * @param {string} category - The category to move the card to.
  */
 async function moveTo(category) {
-    
+
     body = JSON.stringify({
         status: category,
     });
     await updateItem('tasks', currentDraggedElement, body);
 
-        // await setItem('tasks/', tasks)    
+    // await setItem('tasks/', tasks)    
     updateHTML();
     removeHighlight(category);
 }
@@ -118,13 +118,13 @@ function updateCategory(card, category, search) {
     card.innerHTML = '';
     for (let i = 0; i < cards.length; i++) {
         const element = cards[i];
-        if (element.status === category && 
-            (element.headline.toLowerCase().includes(search) || 
-             element.text.toLowerCase().includes(search) || 
-             search === '')) {
-            card.innerHTML += generateCardHTML(element); 
-            userTags(element);          
-        }       
+        if (element.status === category &&
+            (element.headline.toLowerCase().includes(search) ||
+                element.text.toLowerCase().includes(search) ||
+                search === '')) {
+            card.innerHTML += generateCardHTML(element);
+            userTags(element);
+        }
     }
     emptyCategory();
 }
@@ -139,7 +139,7 @@ function emptyCategory() {
     let emptyfeedback = document.getElementById('feedback');
     let emptydone = document.getElementById('done');
 
-    if(emptytodo.innerHTML === "") {
+    if (emptytodo.innerHTML === "") {
         emptytodo.innerHTML += `
                 <div class="emptyContainer">
                     <div class="empty">
@@ -147,7 +147,7 @@ function emptyCategory() {
                     </div>
                 </div>`;
     }
-    if(emptyprogress.innerHTML === "") {
+    if (emptyprogress.innerHTML === "") {
         emptyprogress.innerHTML += `
                 <div class="emptyContainer">
                     <div class="empty">
@@ -155,7 +155,7 @@ function emptyCategory() {
                     </div>
                 </div>`;
     }
-    if(emptyfeedback.innerHTML === "") {
+    if (emptyfeedback.innerHTML === "") {
         emptyfeedback.innerHTML += `
                 <div class="emptyContainer">
                     <div class="empty">
@@ -163,7 +163,7 @@ function emptyCategory() {
                     </div>
                 </div>`;
     }
-    if(emptydone.innerHTML === "") {
+    if (emptydone.innerHTML === "") {
         emptydone.innerHTML += `
                 <div class="emptyContainer">
                     <div class="empty">
@@ -211,11 +211,11 @@ function subtasksCheck(element) {
     let id = element.id;
     let subtasks = element.subtasks ? element.subtasks.length : 0;
     let trueCount = 0;
-    for (let i = 0; i < subtasks; i++) {           
-        if(element.subtasks[i].done === true){
-            trueCount++;       
+    for (let i = 0; i < subtasks; i++) {
+        if (element.subtasks[i].done === true) {
+            trueCount++;
         }
-    } 
+    }
     let subtaskHTMLCount = document.getElementById(`subtaskBar${id}`);
     subtaskHTMLCount.innerHTML = `<span>${trueCount}/${subtasks} Subtasks</span>`;
 }
@@ -231,9 +231,10 @@ function subtaskLoad(id) {
         for (let i = 0; i < card.subtasks.length; i++) {
             const specificSubtask = card.subtasks[i].name;
             const isDone = card.subtasks[i].done;
-        let subtaskHTML = document.getElementById('unorderedListOfSubtask');
+            let subtaskHTML = document.getElementById('unorderedListOfSubtask');
             subtaskHTML.innerHTML += `<li><input type="checkbox" id="check${i}" ${isDone ? 'checked' : ''} onclick="subtasksCheckForTrue(${id}, ${i})">${specificSubtask}</li>`;
-    }}
+        }
+    }
 }
 
 /**
@@ -246,14 +247,19 @@ function subtasksCheckForTrue(cardId, subtaskID) {
     let checkbox = document.getElementById(`check${subtaskID}`).checked;
     let card = cards.find(card => card.id === cardId);
 
-    if(checkbox === true) {
+    if (checkbox === true) {
         card.subtasks[subtaskID].done = true;
-    }else if(checkbox === false) {
-        card.subtasks[subtaskID].done = false;}
+    } else if (checkbox === false) {
+        card.subtasks[subtaskID].done = false;
+    }
     subtasksCheck(card);
     updateProgressBar(card);
 }
 
+/**
+ * Checks if subtasks exist and generates HTML for a progress bar if true.
+ * @param {Object} card - The task element containing subtasks.
+ */
 function isSubTaskTrue(card) {
     if (card.subtasks.length > 0) {
         document.getElementById('isSubTaskTrue').innerHTML = `
@@ -312,9 +318,9 @@ function editCard(cardId) {
     let textarea = document.getElementById('editTextarea');
     let data = document.getElementById('editDate');
 
-    title.value = infoArrayCard['headline'];  
-    textarea.value = infoArrayCard['text']; 
-    data.value = infoArrayCard['date']; 
+    title.value = infoArrayCard['headline'];
+    textarea.value = infoArrayCard['text'];
+    data.value = infoArrayCard['date'];
     prioEdit(infoArrayCard['priority'], cardId, event);
     renderSubTaskInBoard(infoArrayCard);
     assignIconEditRender(cardId);
@@ -326,7 +332,7 @@ function editCard(cardId) {
  * @param {Event} event - The form submission event.
  * @param {number} cardId - The ID of the task being edited.
  */
-async function CardEditForm(event,cardId) {
+async function CardEditForm(event, cardId) {
     event.stopPropagation();
     event.preventDefault();
     let infoArrayCard = cards.find(card => card.id === cardId);
@@ -340,8 +346,8 @@ async function CardEditForm(event,cardId) {
     // await setItem('tasks/', tasks);
     currentChecktContact = [];
     closeOverview();
-    updateHTML(); 
-    
+    updateHTML();
+
 }
 
 /**
@@ -350,7 +356,7 @@ async function CardEditForm(event,cardId) {
  */
 function renderSubtasksInEditPopup(card) {
     let editSubTasksBox = document.getElementById('subTasksBox');
-    editSubTasksBox.innerHTML = ''; 
+    editSubTasksBox.innerHTML = '';
 
     if (card.subtasks && Array.isArray(card.subtasks) && card.subtasks.length > 0) {
         card.subtasks.forEach((subtask, index) => {
@@ -369,10 +375,10 @@ function renderSubtasksInEditPopup(card) {
  */
 async function deleteCard(id) {
 
-        await deleteItem('tasks', id);
-        updateHTML();
-        closeOverview();
-    }
+    await deleteItem('tasks', id);
+    updateHTML();
+    closeOverview();
+}
 
 
 /**
@@ -382,30 +388,30 @@ async function deleteCard(id) {
  * @param {number} cardId - The ID of the task being edited.
  * @param {Event} event - The event associated with the priority change.
  */
-function prioEdit(prioID,cardId,event){
+function prioEdit(prioID, cardId, event) {
     event.preventDefault()
     let card = cards.find(card => card.id === cardId)
     card.priority = prioID
-    
+
     let selectedPrio0 = document.getElementById('btnUrgent');
     let selectedPrio1 = document.getElementById('btnMedium');
     let selectedPrio2 = document.getElementById('btnLow');
-      prioArray = prioID;
-    if(prioArray === 2){
-    selectedPrio2.classList.add('activePrio2');
-    selectedPrio1.classList.remove('activePrio1');
-    selectedPrio0.classList.remove('activePrio0');
-  }else if (prioArray === 1) {
-    selectedPrio2.classList.remove('activePrio2');
-    selectedPrio1.classList.add('activePrio1');
-    selectedPrio0.classList.remove('activePrio0');
-  } else if (prioArray === 0) {
-    selectedPrio2.classList.remove('activePrio2');
-    selectedPrio1.classList.remove('activePrio1');
-    selectedPrio0.classList.add('activePrio0');
-  } 
+    prioArray = prioID;
+    if (prioArray === 2) {
+        selectedPrio2.classList.add('activePrio2');
+        selectedPrio1.classList.remove('activePrio1');
+        selectedPrio0.classList.remove('activePrio0');
+    } else if (prioArray === 1) {
+        selectedPrio2.classList.remove('activePrio2');
+        selectedPrio1.classList.add('activePrio1');
+        selectedPrio0.classList.remove('activePrio0');
+    } else if (prioArray === 0) {
+        selectedPrio2.classList.remove('activePrio2');
+        selectedPrio1.classList.remove('activePrio1');
+        selectedPrio0.classList.add('activePrio0');
+    }
 }
-    
+
 /**
  * Updates the assigned user display in the task editing overlay, showing who is currently assigned to the task.
  * @param {Object} element - The task element being edited.
@@ -413,16 +419,16 @@ function prioEdit(prioID,cardId,event){
  */
 function assignedToEdit(element, b) {
     let assignProfil = document.getElementById(`assignedProfileName${b}`);
-        assignProfil.innerHTML = '';
+    assignProfil.innerHTML = '';
     for (let i = 0; i < element.length; i++) {
         let userInitials = element.user.id;
-        assignProfil.innerHTML +=`
+        assignProfil.innerHTML += `
         <div class="profileName">
             <div class="assignedLetters" style="background-color: ${userInitials['bgColor']}">${userInitials['initials']}</div>
             <span>${userInitials['name']}</span>
         </div>`;
     }
-    assignIcon(element); 
+    assignIcon(element);
 }
 
 /**
@@ -434,11 +440,11 @@ function assignIcon(element) {
     let assignIcon = document.getElementById(`iconProfile${element['id']}`);
     assignIcon.innerHTML = '';
 
-        assignIcon.innerHTML +=`
+    assignIcon.innerHTML += `
         <div class="imgProfile">
             <div class="assignedLetters" style="background-color: ${element.bgColor}">${element.initials}</div>
         </div>`;
-    
+
 }
 
 /**
@@ -446,7 +452,7 @@ function assignIcon(element) {
  * This function is a wrapper around the `toggleCategories` function, ensuring it can be easily called from UI events.
  * @param {Event} event - The event that triggered the toggle action.
  */
-function toggleCategoriesBoard(event){
+function toggleCategoriesBoard(event) {
     toggleCategories(event);
 }
 
@@ -460,11 +466,11 @@ function toggleCategoriesBoard(event){
  * @param {string} name - The full name of the user.
  * @param {number} cardId - The ID of the card to which the user is being assigned or unassigned.
  */
-function toggleCheckboxAndTriggerOnChange(userNameForId, event,initials,bgColor,name, cardId) {
+function toggleCheckboxAndTriggerOnChange(userNameForId, event, initials, bgColor, name, cardId) {
     const checkboxId = `assignedToContact_${userNameForId}`;
     const checkbox = document.getElementById(checkboxId);
     if (checkbox) {
-        checkbox.checked = !checkbox.checked; 
+        checkbox.checked = !checkbox.checked;
         updateSelectedContactsBoard(initials, bgColor, name, cardId, checkbox, event);
     }
 }
@@ -476,10 +482,10 @@ function toggleCheckboxAndTriggerOnChange(userNameForId, event,initials,bgColor,
 function assignIconEdit() {
     let assignIcon = document.getElementById(`renderSelectedContacts`);
     assignIcon.innerHTML = '';
-  
+
     for (let i = 0; i < currentChecktContact.length; i++) {
         let icon = currentChecktContact[i];
-        assignIcon.innerHTML +=`
+        assignIcon.innerHTML += `
         <div class="imgProfile">
             <div class="assignedLetters" style="background-color: ${icon['bgColor']}">${icon['initials']}</div>
         </div>`;
@@ -496,17 +502,17 @@ function assignIconEditRender(cardId) {
     console.log(card['user']);
     let assignIcon = document.getElementById(`renderSelectedContacts`);
     assignIcon.innerHTML = '';
-  
+
     for (let i = 0; i < card['user'].length; i++) {
         console.log(card['user'][i]['initials']);
-        
+
         currentChecktContact.push({
             name: card['user'][i]['name'],
             bgColor: card['user'][i]['bgColor'],
             initials: card['user'][i]['initials']
         });
 
-        assignIcon.innerHTML +=`
+        assignIcon.innerHTML += `
         <div class="imgProfile">
             <div class="assignedLetters" style="background-color: ${card['user'][i]['bgColor']}">${card['user'][i]['initials']}</div>
         </div>`;
@@ -522,26 +528,26 @@ function toggleAssignedToBoard(i, event) {
     event.stopPropagation();
     let contactsBox = document.getElementById('contactsBox');
     if (contactsBox.style.display === 'none' || contactsBox.innerHTML.trim() === '') {
-      assignedToBoard(i);
-      contactsBox.style.display = 'block';
+        assignedToBoard(i);
+        contactsBox.style.display = 'block';
     } else {
-      contactsBox.style.display = 'none'; 
+        contactsBox.style.display = 'none';
     }
-    
+
 }
-  
+
 /**
  * Populates and displays the assigned user selection interface for a task, allowing users to be assigned to the task.
  * @param {number} cardId - The ID of the task for which users are being assigned.
  */
-  async function assignedToBoard(cardId) {
+async function assignedToBoard(cardId) {
     await load_contacts_from_webstorage();
     let contactsBox = document.getElementById('contactsBox');
     contactsBox.innerHTML = '';
     let users = contacts[userID];
     let card = cards.find(card => card.id === cardId);
     if (!card) {
-        return; 
+        return;
     }
     let assignedContacts = card.user || [];
     let uniqueUsers = {};
@@ -555,7 +561,7 @@ function toggleAssignedToBoard(i, event) {
             uniqueUsers[key] = true;
         }
     }
-    
+
 }
 
 /**
@@ -566,9 +572,9 @@ function toggleAssignedToBoard(i, event) {
  * @param {number} id - The ID of the task being updated.
  * @param {HTMLInputElement} checkbox - The checkbox input indicating whether the user is selected.
  */
-  function updateSelectedContactsBoard(initials, bgColor, name, id, checkbox, event) {
+function updateSelectedContactsBoard(initials, bgColor, name, id, checkbox, event) {
     event.stopPropagation();
-    let key = name + bgColor; 
+    let key = name + bgColor;
     if (checkbox.checked) {
         let isContactAlreadyAdded = currentChecktContact.some(contact => contact.name + contact.bgColor === key);
         if (!isContactAlreadyAdded) {
@@ -578,25 +584,25 @@ function toggleAssignedToBoard(i, event) {
                 initials: initials
             });
         }
-    }else {  
+    } else {
         currentChecktContact = currentChecktContact.filter(contact => !(contact.name === name && contact.bgColor === bgColor));
     }
     updateAssignedUsersInCard(id);
     assignIconEdit(id);
-  }
+}
 
- /**
- * Saves the updated list of assigned users to a task and refreshes the task's display on the board.
- * @param {number} id - The ID of the task for which assigned users are being updated.
- */ 
+/**
+* Saves the updated list of assigned users to a task and refreshes the task's display on the board.
+* @param {number} id - The ID of the task for which assigned users are being updated.
+*/
 async function updateAssignedUsersInCard(id) {
     let cardIndex = cards.findIndex(card => card.id === Number(id));
     if (cardIndex !== -1) {
 
         cards[cardIndex].user = currentChecktContact;
         await setItem('tasks', cards);
-        assignIcon(cards[cardIndex]);   
-        
+        assignIcon(cards[cardIndex]);
+
     }
 }
 
@@ -613,7 +619,7 @@ async function addTaskHTMLOpen(category) {
     openAddTask.innerHTML = '';
     openAddTask.innerHTML = addTaskHTML();
     openAddTask.classList.remove('d-none');
-     
+
     categorys = [];
     updateHTML();
 }
@@ -633,12 +639,12 @@ function addTaskHTMLClose() {
  * @param {Object} element - The task element to update with user tags.
  */
 function userTags(element) {
-    let labelsID = 'labelsBoard'+element.id;
+    let labelsID = 'labelsBoard' + element.id;
     let tagName = 'User Story';
     if (element.category.includes(tagName)) {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('userStory');
-    }else {
+    } else {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('technicalTask');
     }
@@ -650,12 +656,12 @@ function userTags(element) {
  * @param {Object} element - The task element in the detail view to update with user tags.
  */
 function userTagsOver(element) {
-     let labelsID = "labelsBoard" + element.id;
+    let labelsID = "labelsBoard" + element.id;
     let tagName = 'User Story';
     if (element.category.includes(tagName)) {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('userStory');
-    }else {
+    } else {
         let userLabelStory = document.getElementById(labelsID);
         userLabelStory.classList.add('technicalTask');
     }
@@ -670,11 +676,11 @@ function mobileCategory(event, id) {
     event.stopPropagation();
     let openCategory = document.getElementById(`categoryOpenMobile${id}`);
 
-    if (openCategory.style.display === 'none') {        
+    if (openCategory.style.display === 'none') {
         openCategory.style.display = 'block';
         openCategory.innerHTML = mobileCategoryHTML(id);
-    }else {
-        openCategory.style.display = 'none'; 
+    } else {
+        openCategory.style.display = 'none';
     }
 }
 
@@ -685,12 +691,12 @@ function mobileCategory(event, id) {
  * @param {Event} event - The event object to prevent event propagation.
  * @param {string} id - The unique identifier of the task to update.
  */
-async function newCategoryHTMLOpen(categorys,event,id) {
+async function newCategoryHTMLOpen(categorys, event, id) {
     event.stopPropagation();
     currentDraggedElement = cards.find(card => card.id === id);
     currentDraggedElement.category = categorys;
-        // await setItem('tasks', tasks);
-        updateHTML();
+    // await setItem('tasks', tasks);
+    updateHTML();
 }
 
 /**
@@ -717,7 +723,7 @@ function loadSubOfArray() {
         let subName = subtasksArrayEditTask[j]['name'];
         let subID = subtasksArrayEditTask[j]['subID'];
         let taskID = subtasksArrayEditTask[j]['taskID'];
-        console.log(subName);  
+        console.log(subName);
         renderTask.innerHTML += loadSubOfArrayHTML(subName, subID, taskID);
     }
 }
@@ -757,7 +763,7 @@ function closeEditSubTaskInBoardCard() {
  * @param {string} subID - The unique identifier of the subtask being edited.
  * @param {string} taskID - The unique identifier of the task to which the subtask belongs.
  */
-function saveEditeSubTaskInBoardCard(subID,taskID) {
+function saveEditeSubTaskInBoardCard(subID, taskID) {
     let subTask = subtasksArrayEditTask.find(subtasksArrayEditTask => subtasksArrayEditTask.subID === subID);
     console.log(subTask);
     let valueOfInput = document.getElementById('editSubTaskInput').value;
@@ -773,8 +779,8 @@ function saveEditeSubTaskInBoardCard(subID,taskID) {
  * @param {string} taskID - The unique identifier of the task to which the subtasks belong.
  */
 function saveNewSubTaskToBoard(subID, taskID) {
-   let card = cards.find(card => card.id === taskID);
-   card['subtasks'] = subtasksArrayEditTask;
+    let card = cards.find(card => card.id === taskID);
+    card['subtasks'] = subtasksArrayEditTask;
 }
 
 /**
@@ -798,15 +804,15 @@ function deleteSubTaskInBoardCard(subID, taskID) {
 function addSubTaskToTheBoardCard(taskID) {
     let valueOfNewTask = document.getElementById('addSubTasks');
     if (valueOfNewTask.value.trim() !== '') {
-      let newSubID = Date.now();
-      subtasksArrayEditTask.push({
-        name: valueOfNewTask.value.trim(),
-        done: false,
-        subID: newSubID,
-        taskID: taskID,
-      });
-      valueOfNewTask.value = '';
-      saveNewSubTaskToBoard(newSubID, taskID);
-}
+        let newSubID = Date.now();
+        subtasksArrayEditTask.push({
+            name: valueOfNewTask.value.trim(),
+            done: false,
+            subID: newSubID,
+            taskID: taskID,
+        });
+        valueOfNewTask.value = '';
+        saveNewSubTaskToBoard(newSubID, taskID);
+    }
     loadSubOfArray();
 }

@@ -28,6 +28,9 @@ async function loginUser(event) {
   login(body);
 }
 
+/**
+ * Checks for a token and redirects to the summary page if it exists.
+ */
 async function tokenCheck() {
   if (checkToken()) {
     // window.location.href = "/assets/templates/summary.html";
@@ -61,8 +64,8 @@ async function registerUser(event) {
     first_name: name,
     password: password,
   });
-    
-    register(body);
+
+  register(body);
 }
 
 /**
@@ -326,6 +329,10 @@ function fadeOutAndReset(logoImage, logo) {
   }, 2000);
 }
 
+/**
+ * Updates the logo image based on the screen width
+ * @param {HTMLElement} logo - html element
+ */
 function updateImageBasedOnResolution(logo) {
   let screenWidth = window.innerWidth;
 

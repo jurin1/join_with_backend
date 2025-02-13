@@ -1,3 +1,10 @@
+/**
+ * @function
+ * @name AuthenticationCheck
+ * @description Immediately invoked function expression (IIFE) that checks for user authentication token in localStorage.
+ *              If the token is absent and the current page is not in the exclusion list (privacy policy, legal notice, login, or signup pages),
+ *              it redirects the user to the login page. This ensures that unauthorized users are not able to access protected pages.
+ */
 (function () {
   const excludedPaths = [
     "privacy_policy.html",

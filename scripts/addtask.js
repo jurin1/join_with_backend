@@ -1,6 +1,6 @@
 let IdCounter;
-let subtasksArray =[];
-let categoryArray =[];
+let subtasksArray = [];
+let categoryArray = [];
 let prioArray = 1;
 let editingSubtaskIndex = -1;
 let selectedCategoryId = null;
@@ -16,11 +16,11 @@ let priorityText = ['urgent', 'medium', 'low'];
  * Initializes the tasks view by rendering the UI and loading tasks for the current user.
  * This function is typically called when the tasks page is loaded to ensure that the user's tasks are displayed.
  */
-async function initTasks(){
+async function initTasks() {
   render();
   contacts = await load_contacts_from_webstorage();
 
-  
+
 }
 
 
@@ -29,7 +29,7 @@ async function initTasks(){
  * Activates the form by creating a task and applying an active style.
  * @param {Event} event - The triggering event.
  */
-function activForm(event) {  
+function activForm(event) {
   createTask(event);
   addActiveStyle(3);
 }
@@ -39,7 +39,7 @@ function activForm(event) {
  * @param {Event} event - The triggering event.
  */
 async function createTask(event) {
-  
+
   // const newCategory = await createAndLogNewCategory();
   // const newTask = createNewTaskObject(newCategory);
   body = await getTaskValue();
@@ -49,6 +49,10 @@ async function createTask(event) {
 
 }
 
+/**
+ * Asynchronously retrieves the values from the input fields and returns them as a JSON string.
+ * @returns {Promise<string>} - A JSON string containing the values from the input fields.
+ */
 async function getTaskValue() {
 
   return JSON.stringify({
@@ -87,10 +91,10 @@ async function createAndLogNewCategory() {
  */
 function getNextTaskId() {
   if (!tasks || tasks.length === 0) {
-      return 0; 
+    return 0;
   } else {
-      const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0);
-      return maxId + 1;
+    const maxId = tasks.reduce((max, task) => Math.max(max, task.id), 0);
+    return maxId + 1;
   }
 }
 
@@ -102,18 +106,18 @@ function createNewTaskObject(newCategory) {
   let headline = document.getElementById("enterTitle").value;
   let text = document.getElementById("enterDescription").value;
   let date = document.getElementById("enterDate").value;
-  
+
   return {
-      id: getNextTaskId(),
-      label: categoryArray,
-      headline: headline,
-      text: text,
-      progressBar: "",
-      subtasks: subtasksArray,
-      user: selectedContactDetails,
-      priority: prioArray,
-      category: newCategory,
-      date: date
+    id: getNextTaskId(),
+    label: categoryArray,
+    headline: headline,
+    text: text,
+    progressBar: "",
+    subtasks: subtasksArray,
+    user: selectedContactDetails,
+    priority: prioArray,
+    category: newCategory,
+    date: date
   };
 }
 
@@ -141,23 +145,35 @@ function toggleContacts(event) {
   event.stopPropagation();
   let contactsBox = document.getElementById('contactsBox');
   if (contactsBox.style.display === 'none' || contactsBox.innerHTML.trim() === '') {
-     assignedTo(); 
+    assignedTo();
     contactsBox.style.display = 'block';
   } else {
-    contactsBox.style.display = 'none'; 
+    contactsBox.style.display = 'none';
   }
 
 }
 
-// This function toggles the selection of a contact when the surrounding div is clicked.
+/**
+ * This function toggles the selection of a contact when the surrounding div is clicked.
+ * @param {string} initials - The initials of the contact.
+ * @param {string} bgColor - The background color associated with the contact.
+ * @param {string} name - The name of the contact.
+ * @param {string} checkboxId - The ID of the checkbox associated with the contact.
+ * @param {Event} event - The triggering event.
+ * @param {number} id - The ID of the contact.
+ */
 function toggleContactSelection(initials, bgColor, name, checkboxId, event, id) {
-   event.stopPropagation();
+  event.stopPropagation();
   const checkbox = document.getElementById(checkboxId);
   if (!checkbox) return;
   checkbox.checked = !checkbox.checked;
   updateSelectedContacts(initials, bgColor, name, checkbox, id);
 }
 
+/**
+ * Closes the contacts box when a click occurs outside of it.
+ * @param {Event} event - The click event.
+ */
 function closeContactsBoxOnClickOutside(event) {
   let contactsBox = document.getElementById('contactsBox');
   if (event.target.closest('#contactsBox') === null) {
@@ -167,6 +183,11 @@ function closeContactsBoxOnClickOutside(event) {
 
 }
 
+/**
+ * Handles the click event on a contact checkbox, updating the assigned contact information.
+ * @param {number} id - The ID of the contact.
+ * @param {string} name - The name of the contact.
+ */
 function handleCheckboxClick(id, name) {
   event.stopPropagation();
   assignedContact = id;
@@ -184,13 +205,13 @@ async function assignedTo() {
   contactsBox.innerHTML = '';
 
   if (contacts && contacts.length > 0) {
-      contacts.forEach(contact => {
-          if (contact && contact.name) { 
-              let initials = getInitials(contact.name); 
-              let isChecked = selectedContactDetails.some(c => c.name === contact.name && c.bgColor === contact.bgColor);
-              contactsBox.innerHTML += assignedToHTML(contact, initials, isChecked);
-          }
-      });
+    contacts.forEach(contact => {
+      if (contact && contact.name) {
+        let initials = getInitials(contact.name);
+        let isChecked = selectedContactDetails.some(c => c.name === contact.name && c.bgColor === contact.bgColor);
+        contactsBox.innerHTML += assignedToHTML(contact, initials, isChecked);
+      }
+    });
   }
 }
 
@@ -234,7 +255,7 @@ function getInitials(name) {
  */
 function renderSelectedContacts(bg_color, name) {
   let renderSelectedContacts = document.getElementById('renderSelectedContacts');
-  renderSelectedContacts.innerHTML = ''; 
+  renderSelectedContacts.innerHTML = '';
 
   if (selectedContactDetails && selectedContactDetails.length >= 0) {
     for (let i = 0; i < selectedContactDetails.length; i++) {
@@ -244,8 +265,8 @@ function renderSelectedContacts(bg_color, name) {
       <div class="renderSelectedContactdetails" style="background-color: ${bg_color};"> ${getInitials(
         name
       )}</div>`;
-        const inputFeld = document.getElementById("searchContacts");
-        inputFeld.placeholder = name;
+      const inputFeld = document.getElementById("searchContacts");
+      inputFeld.placeholder = name;
 
     }
   }
@@ -284,7 +305,7 @@ function toggleCategories(event) {
     addCategory();
     categoryBox.style.display = 'block';
   } else {
-    categoryBox.style.display = 'none'; 
+    categoryBox.style.display = 'none';
   }
 }
 
@@ -304,6 +325,10 @@ function dropDownOpen() {
   }
 }
 
+/**
+ * Stops the propagation of an event.
+ * @param {Event} event - The event to stop propagation for.
+ */
 function stopPropagation(event) {
   event.stopPropagation();
 }
@@ -342,7 +367,7 @@ function updateLabels(categoryId) {
   let selectTaskCategory = document.getElementById('selectTaskCategory');
 
   if (checkbox.checked) {
-    categoryArray = [categoryText]; 
+    categoryArray = [categoryText];
     selectTaskCategory.innerText = categoryText;
   } else {
     categoryArray = [];
@@ -362,7 +387,7 @@ function addSubTask() {
   let subTaskInput = document.getElementById('addSubTasks');
   if (subTaskInput.value.trim() !== '') {
 
-    
+
     subtasksArray.push({
       name: subTaskInput.value.trim(),
       done: false,
@@ -389,28 +414,29 @@ function displaySubtasks() {
  * Opens the edit interface for a specified subtask, allowing the user to modify its name.
  * @param {number} index - The index of the subtask in the subtasksArray to be edited.
  */
-function editSubTask(index){
+function editSubTask(index) {
   let editSubTasks = document.getElementById('editSubTasksBox');
   editSubTasks.innerHTML = '';
 
   if (index >= 0 && index < subtasksArray.length) {
     let subTaskName = subtasksArray[index].name;
 
-  editSubTasks.innerHTML += editSubTaskHTML(index, subTaskName);
+    editSubTasks.innerHTML += editSubTaskHTML(index, subTaskName);
     let editSubTaskInput = document.getElementById('editSubTaskInput');
     editSubTaskInput.addEventListener('input', function () {
       subtasksArray[index].name = editSubTaskInput.value;
     });
-}}
+  }
+}
 
 /**
  * Deletes a subtask from the subtasksArray and updates the displayed list of subtasks.
  * @param {number} index - The index of the subtask to be deleted.
  */
-function closeEditSubTask(subID, taskID){
+function closeEditSubTask(subID, taskID) {
   let subEdit = document.getElementById('editSubTaskContainer');
   subEdit.innerHTML = '';
-  
+
 }
 
 /**
@@ -432,7 +458,7 @@ function saveEditeSubTask(index) {
         let subtask = subtasksArray[i];
         let subtaskID = subtasksArray[i]['subID'];
         let taskID = subtasksArray[i]['taskID'];
-        subTasksBox.innerHTML += saveEditeSubTaskHTML(subtask, taskID, subtaskID,i);
+        subTasksBox.innerHTML += saveEditeSubTaskHTML(subtask, taskID, subtaskID, i);
       }
     }
   }
@@ -443,11 +469,11 @@ function saveEditeSubTask(index) {
  * @param {number} subtaskID - The unique identifier of the subtask to be removed.
  * @param {number} taskID - The unique identifier of the task to which the subtask belongs.
  */
-function deleteSubTask(subtaskID,taskID) {
+function deleteSubTask(subtaskID, taskID) {
   let index = subtasksArray.findIndex(task => task.subID === subtaskID);
-  
-      subtasksArray.splice(index, 1);
-      displaySubtasks();
+
+  subtasksArray.splice(index, 1);
+  displaySubtasks();
 }
 
 /**
@@ -468,10 +494,10 @@ function updateCategory(card, search) {
   card.innerHTML = '';
 
   for (let i = 0; i < cards.length; i++) {
-      const element = cards[i];
-      if (element['category'] === category && (element['headline'].toLowerCase().includes(search) || search === '')) {
-          card.innerHTML += generateCardHTML(element);           
-      }       
+    const element = cards[i];
+    if (element['category'] === category && (element['headline'].toLowerCase().includes(search) || search === '')) {
+      card.innerHTML += generateCardHTML(element);
+    }
   }
   emptyCategory();
 }
@@ -479,7 +505,7 @@ function updateCategory(card, search) {
 /**
  * Asynchronously loads contacts from web storage and updates the contacts state.
  */
-async function load_contacts_from_webstorage(){
+async function load_contacts_from_webstorage() {
   let contactsValue = await getItem('contacts');
   return contactsValue;
 }
@@ -526,7 +552,7 @@ function clearForm() {
  * @param {Event} event - The event associated with form submission or validation.
  * @param {Array} newCategory - The selected category for the new task.
  */
-function ifCheckTasks(isTitleValid,isDescriptionValid,isDateValid,newTitle,newDescription,newDate,event,newCategory) {
+function ifCheckTasks(isTitleValid, isDescriptionValid, isDateValid, newTitle, newDescription, newDate, event, newCategory) {
   if (newTitle === '') {
     document.getElementById('requiredMessageTitle').innerHTML = `<span class="requiredField">This fiels is required</span>`;
     isTitleValid = false;
@@ -541,15 +567,17 @@ function ifCheckTasks(isTitleValid,isDescriptionValid,isDateValid,newTitle,newDe
   }
   if (newDate === '') {
     document.getElementById('requiredMessageDate').innerHTML = `<span class="requiredField">This fiels is required</span>`;
-    isDateValid = false;} else {
-    document.getElementById('requiredMessageDate').innerHTML = '';}
+    isDateValid = false;
+  } else {
+    document.getElementById('requiredMessageDate').innerHTML = '';
+  }
   if (newCategory.length < 1) {
     document.getElementById('requiredMessageCategory').innerHTML = `<span class="requiredField">This fiels is required</span>`;
   } else {
     document.getElementById('requiredMessageCategory').innerHTML = '';
   }
   if (isTitleValid && isDescriptionValid && isDateValid && newCategory.length >= 1) {
-    
+
     activForm(event);
   }
 }

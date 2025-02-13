@@ -1,4 +1,3 @@
-
 let isClicked = false;
 let tasks = [];
 let userID = parseInt(localStorage.getItem('userID'), 10);
@@ -264,6 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/**
+ * Redirects the user to the contacts page in edit mode.
+ */
 function editLoggedinUser() {
   sessionStorage.setItem('editUser', true);
   sessionStorage.setItem('selectedMenu', 4);
@@ -271,16 +273,23 @@ function editLoggedinUser() {
 }
 
 
+/**
+ * Opens or closes the mobile sidebar menu.
+ * @param {boolean} bool - true to open, false to close.
+ */
 function openMobileSidebar(bool) {
   const mobileMenu = document.querySelector(".sideBarBox");
-  if (mobileMenu) { 
+  if (mobileMenu) {
     mobileMenu.style.display = bool ? "block" : "none";
   }
 }
 
+/**
+ * Closes the mobile sidebar menu when clicking outside the menu or button.
+ */
 document.addEventListener('click', function (event) {
   const mobileMenu = document.querySelector(".sideBarBox");
-  const menuButton = document.getElementById('menuButton'); 
+  const menuButton = document.getElementById('menuButton');
 
   if (!mobileMenu || !menuButton) {
     return;
@@ -290,10 +299,13 @@ document.addEventListener('click', function (event) {
   const isClickOnButton = menuButton.contains(event.target);
 
   if (!isClickInsideMenu && !isClickOnButton && window.innerWidth < 800) {
-    openMobileSidebar(false); 
+    openMobileSidebar(false);
   }
 });
 
+/**
+ * Handles window resize events to adjust the mobile sidebar menu.
+ */
 function handleResize() {
   const mobileMenu = document.querySelector(".sideBarBox");
   if (window.innerWidth > 800 && mobileMenu.style.display === "none") {
@@ -301,4 +313,7 @@ function handleResize() {
   }
 }
 
+/**
+ * Listens for window resize events to adjust the mobile sidebar menu.
+ */
 window.addEventListener("resize", handleResize);

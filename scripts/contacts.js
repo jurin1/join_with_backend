@@ -254,6 +254,9 @@ function deselectAllContainers() {
   });
 }
 
+/**
+ * Scrolls to the contact view.
+ */
 function scrollToContactView() {
   window.scrollTo({
     top: 0,
@@ -351,6 +354,11 @@ async function deleteContact(id) {
   }
 }
 
+/**
+ * Displays a confirmation question before deleting a contact.
+ * @param {number} id - The ID of the contact to be deleted.
+ * @param {string} name - The name of the contact to be deleted.
+ */
 function deleteContactQuestion(id, name) {
   let element = document.getElementById("deleteContactSure");
   element.innerHTML = "";
@@ -358,6 +366,11 @@ function deleteContactQuestion(id, name) {
   element.classList.remove("d-none");
 }
 
+/**
+ * Deletes a contact if confirmed or hides the confirmation prompt.
+ * @param {boolean} bool - True to delete the contact, false to cancel.
+ * @param {number} id - The ID of the contact to delete.
+ */
 function deleteContactSure(bool, id) {
   let element = document.getElementById("deleteContactSure").classList;
   if (bool) {
@@ -366,6 +379,9 @@ function deleteContactSure(bool, id) {
   element.add("d-none");
 }
 
+/**
+ * Displays a popup indicating that a contact has been successfully deleted.
+ */
 function popupDeleteContact() {
   document
     .getElementById("popUpSuccesfullyDeleted")
@@ -687,6 +703,10 @@ function ifCheckContact(
 //   }, 2000);
 // });
 
+/**
+ * Edits the user account by displaying a popup.
+ * @param {boolean} bool - Determines whether to show or hide the edit user account popup.
+ */
 async function editUserAccount(bool) {
 
   let userName = document.getElementById("nameLoggedinUser");
@@ -699,12 +719,15 @@ async function editUserAccount(bool) {
     await displayEditUserAccount(bool, userData)
     userName.value = userData.first_name;
     userEmail.value = userData.email;
-  } else { 
+  } else {
     displayGuestUserPopup(true);
   }
   scrollToContactView();
 };
 
+/**
+ * Checks and manages password input for user account updates.
+ */
 function passwordCheck() {
   let userPasswordConfirm = document.getElementById("passwordConfirm");
   let userPassword = document.getElementById("password");
@@ -721,6 +744,9 @@ function passwordCheck() {
 
 }
 
+/**
+ * Updates the user's account information.
+ */
 function updateUser() {
   let userName = document.getElementById("nameLoggedinUser").value;
   let userEmail = document.getElementById("emailLoggedinUser").value;
@@ -749,7 +775,11 @@ function updateUser() {
 }
 
 
-async function displayEditUserAccount(bool){
+/**
+ * Displays or hides the edit user account popup.
+ * @param {boolean} bool - Determines whether to show or hide the edit user account popup.
+ */
+async function displayEditUserAccount(bool) {
   let backGroundOpacityContainer = document.getElementById("backGroundOpacityContainer");
   let popupUserAccount = document.getElementById("editUserAccount");
   if (bool) {
@@ -763,6 +793,10 @@ async function displayEditUserAccount(bool){
   }
 };
 
+/**
+ * Displays a popup for guest users.
+ * @param {boolean} bool - Determines whether to show or hide the guest user popup.
+ */
 function displayGuestUserPopup(bool) {
   let displayGuestUser = document.getElementById("popGuestUser");
 
@@ -773,6 +807,9 @@ function displayGuestUserPopup(bool) {
   }
 }
 
+/**
+ * Confirms if the password and confirm password fields match, enabling or disabling the update button accordingly.
+ */
 function confirmPassword() {
   let password = document.getElementById("password").value;
   let confirmPassword = document.getElementById("passwordConfirm").value;
@@ -787,6 +824,9 @@ function confirmPassword() {
   }
 }
 
+/**
+ * Starts the edit user account process if specified in session storage.
+ */
 function startEditUserAccount() {
   if (sessionStorage.getItem("editUser")) {
     editUserAccount(true);

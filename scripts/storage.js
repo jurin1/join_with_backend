@@ -1,4 +1,3 @@
-
 const STORAGE_TOKEN = 'Y2B64H33P1ZFHWE7S0HF0V8EC9OTCQZV1FG8B8B5';
 const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 const API_URL = "https://dj.neizcon.de/api/";
@@ -7,14 +6,15 @@ const API_URL = "https://dj.neizcon.de/api/";
 /**
  * Saves an item to remote storage with the specified key and value.
  * This function uses the predefined STORAGE_TOKEN and STORAGE_URL constants for authentication and the storage endpoint.
- * @param {string} key - The key under which the value is stored.
- * @param {any} value - The value to be stored.
+ * @param {string} urlPath - The path to the api endpoint.
+ * @param {string} body - The body as json string.
+ * @param {boolean} logging - If true, logs the url and body to the console.
  */
 async function setItem(urlPath, body, logging) {
   if (logging) {
     console.log("setItem", urlPath, body);
   }
-    const url = `${API_URL}${urlPath}`;
+  const url = `${API_URL}${urlPath}`;
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(url, {
@@ -27,7 +27,7 @@ async function setItem(urlPath, body, logging) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text(); 
+      const errorText = await response.text();
       throw new Error(
         `HTTP error! Status: ${response.status}, Message: ${errorText}`
       );
@@ -35,10 +35,10 @@ async function setItem(urlPath, body, logging) {
 
     const data = await response.json();
 
-    return data; 
+    return data;
   } catch (error) {
     console.error("Error creating contact:", error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -47,35 +47,40 @@ async function setItem(urlPath, body, logging) {
 /**
  * Retrieves an item from remote storage using the specified key.
  * This function constructs a request URL using the predefined STORAGE_TOKEN and STORAGE_URL constants.
- * @param {string} key - The key of the item to retrieve.
+ * @param {string} urlPath - The path to the api endpoint.
  */
-async function getItem(urlPath) { 
-    const token = localStorage.getItem("token");
-    const url = `${API_URL}${urlPath}`;
+async function getItem(urlPath) {
+  const token = localStorage.getItem("token");
+  const url = `${API_URL}${urlPath}`;
 
-    try {
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-        return data; 
-        
-    } catch (error) {
-      console.error("Error fetching contacts:", error);
-      
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+
+  }
 }
 
-
-async function deleteItem(url,id) {
+/**
+ * Deletes an item from the remote storage
+ * @param {string} url - The url to the endpoint
+ * @param {number} id - The id of the item to be deleted
+ * @returns {boolean} Returns true if the item was deleted
+ */
+async function deleteItem(url, id) {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_URL}${url}/${id}/`, {
@@ -96,6 +101,13 @@ async function deleteItem(url,id) {
   }
 }
 
+/**
+ * Updates an item in the remote storage with the given data.
+ * @param {string} url - The api endpoint
+ * @param {number} id - The id of the item
+ * @param {string} body - The body as a JSON string
+ * @returns {*} Returns the updated item
+ */
 async function updateItem(url, id, body) {
   const token = localStorage.getItem("token");
   try {
@@ -120,36 +132,43 @@ async function updateItem(url, id, body) {
   }
 }
 
+/**
+ * Logs the user in
+ * @param {string} body - the body as a JSON string
+ */
 async function login(body) {
-      try {
-        const response = await fetch(API_URL+'login/', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: body,
-        });
+  try {
+    const response = await fetch(API_URL + 'login/', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (response.ok) {
-          localStorage.setItem("token", data.token); 
-          localStorage.setItem("name", data.name); 
-          localStorage.setItem("user_id", data.userID); 
-          window.location.href = "/assets/templates/summary.html"; 
-        } else {
+    if (response.ok) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("user_id", data.userID);
+      window.location.href = "/assets/templates/summary.html";
+    } else {
 
-          console.error("Login failed:", data);
-          document.getElementById("invalidValue").innerHTML =
-            data.error || "Login fehlgeschlagen."; 
-        }
-      } catch (error) {
-        alert("Login fehlgeschlagen. Bitte versuchen Sie es erneut.");
-        console.error("Login error:", error);
-      }
+      console.error("Login failed:", data);
+      document.getElementById("invalidValue").innerHTML =
+        data.error || "Login fehlgeschlagen.";
+    }
+  } catch (error) {
+    alert("Login fehlgeschlagen. Bitte versuchen Sie es erneut.");
+    console.error("Login error:", error);
+  }
 }
 
-
+/**
+ * Registers a new user account.
+ * @param {string} body - The request body as a JSON string.
+ */
 async function register(body) {
   try {
     const response = await fetch(API_URL + "register/", {
@@ -175,6 +194,10 @@ async function register(body) {
   }
 }
 
+/**
+ * Checks if a token is stored in localStorage.
+ * @returns {Promise<string|null>} Returns the token if it exists, otherwise null.
+ */
 async function checkToken() {
   token = localStorage.getItem("token");
   if (token) {
@@ -182,6 +205,12 @@ async function checkToken() {
   }
 }
 
+/**
+ * Updates the user account
+ * @param {string} url - the api endpoint
+ * @param {string} body - the body as a JSON string
+ * @returns {*} returns the updated data
+ */
 async function updateUserAccount(url, body) {
   const token = localStorage.getItem("token");
   try {
