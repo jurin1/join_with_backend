@@ -1,0 +1,11 @@
+{
+    "name": "join_with_backend",
+    "version": "1.0.0",
+    "description": "CRM in Vainilla JS and Django Backend",
+    "scripts": {
+        "generate-docs": "jsdoc -c jsdoc.conf.json"
+    },
+    "devDependencies": {
+        "jsdoc": "^4.0.4" 
+    }
+}
