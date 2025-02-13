@@ -11,4 +11,5 @@ urlpatterns = [
     path('tasks/<int:pk>/', views.TaskRetrieveUpdateDestroy.as_view(), name='task-retrieve-update-destroy'),
     path('urgent_tasks/', views.UrgentUpcomingTaskList.as_view(), name='urgent-upcoming-tasks'),
     path('healthcheck/', views.health_check, name='health_check'),
+    path('user/', views.UserDetailView.as_view(), name='user-detail'),
 ]

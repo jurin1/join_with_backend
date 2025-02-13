@@ -57,3 +57,9 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name']
         )
         return user
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']  
+        read_only_fields = ['username']  

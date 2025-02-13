@@ -9,6 +9,10 @@
         display: none;
     }
 
+    .mobile-menu-btn{
+        display: block;
+    }
+
     header{
         max-width: unset;
         height: 80px;

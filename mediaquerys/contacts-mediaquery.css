@@ -147,9 +147,7 @@
       display: none;
     }
   
-    .cancelBtn {
-      display: none;
-    }
+
   
     .cancelCreateContactButtons {
       display: flex;
@@ -240,6 +238,10 @@
       width: 170px;
     }
 
+    .addNewContactPopUpContainer {
+     height: 700px;
+     }
+
     .successfullyText{
       margin-block: 0;
       font-size: 16px;
@@ -267,8 +269,9 @@
       /* height: calc(100vh - 160px); */
       position: unset;
       width: unset;
-    
     }
+
+
 
     .addContactButtonContacts{
       width: 100%;
@@ -339,7 +342,10 @@
     }
 
     .personLogo{
-      display: inline !important;
+      display: flex;
+    }
+    .editContactMobile{
+      display: flex;
     }
 
     #letterBox{
@@ -374,7 +380,10 @@
       height: 100px;
     }
 
-  
+    .popupGuestUser{
+      width: 310px;
+      text-align: center;
+    }
 
   }
   
@@ -428,9 +437,7 @@
       display: none;
     }
   
-    .cancelBtn {
-      display: none;
-    }
+
   
     .cancelCreateContactButtons {
       display: flex;

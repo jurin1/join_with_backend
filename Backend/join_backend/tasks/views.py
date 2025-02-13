@@ -102,3 +102,10 @@ def health_check(request):
     Returns a 200 OK status if the server is running.
     """
     return Response({'status': 'ok'}, status=status.HTTP_200_OK)
+
+class UserDetailView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user

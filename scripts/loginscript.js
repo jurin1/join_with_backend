@@ -39,7 +39,7 @@ async function tokenCheck() {
  */
 function guestLogin() {
   body = JSON.stringify({
-    username: "guest@test.de",
+    username: "guest@mail.com",
     password: "Test123!",
   });
   login(body);

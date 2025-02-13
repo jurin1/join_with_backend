@@ -491,6 +491,8 @@ async function load_contacts_from_webstorage(){
 function clearForm() {
   document.getElementById("newTaskForm").reset();
   selectedContactDetails = [];
+  subtasksArray = [];
+  categoryArray = [];
   let contactCheckboxes = document.querySelectorAll('.contactCheckbox');
   contactCheckboxes.forEach(checkbox => {
     checkbox.checked = false;
@@ -499,6 +501,8 @@ function clearForm() {
   document.getElementById("categoryBox").innerHTML = "";
   document.getElementById("subTasksBox").innerHTML = "";
   document.getElementById('selectTaskCategory').innerHTML = "Select Task Category";
+  document.getElementById("searchContacts").placeholder =
+    "Select contacts to assign";
   document.getElementById("btnUrgent").classList.remove("activePrio0");
   document.getElementById("btnLow").classList.remove("activePrio2");
   document.getElementById("btnMedium").classList.add("activePrio1");

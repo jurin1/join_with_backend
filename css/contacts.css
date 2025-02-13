@@ -146,6 +146,7 @@ h3 {
 }
 
 .addNewContactPopUpContainer {
+
   display: flex;
   width: 1212px;
   height: 592px;
@@ -175,7 +176,6 @@ h3 {
 .addNewContactBackPopUpContainer {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   display: flex;
@@ -295,6 +295,7 @@ form {
   font-weight: 500;
   font-family: 'Inter',sans-serif;
   line-height: 56.4px;
+  color: white ;
 }
 
 .inputButtonsContainer {
@@ -346,7 +347,7 @@ form {
   width: 364px;
   height: 57px;
   gap: 24px;
-  padding-top: 48px;
+  padding-top: 90px;
 }
 
 .inputIconsContainer {
@@ -801,12 +802,22 @@ input:focus {
 }
 
 .personLogo {
-  position: absolute;
+  position: fixed;
+  top: 660px;
   right: 16px;
-  width: 56px;
-  height: 56px;
+  width: 46px;
+  height: 46px;
   border-radius: 46px;
   cursor: pointer;
+  background-color: #2a3647;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.personLogo img {
+  width: 32px;
+  height: 32px;
 }
 
 .personLogo:hover path {
@@ -814,12 +825,26 @@ input:focus {
 }
 
 .editContactMobile{
-  position: absolute;
+  position: fixed;
+  top: 610px;
   right: 16px;
-  width: 56px;
-  height: 56px;
+  width: 46px;
+  height: 46px;
   border-radius: 46px;
   cursor: pointer;
+  background-color: #2a3647;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.editContactMobile img:hover {
+  fill: #29abe2;
+}
+
+.editContactMobile img {
+  width: 32px;
+  height: 32px;
 }
 
 .editDeleteContainerMobile{
@@ -840,9 +865,7 @@ input:focus {
 
 }
 
-.editContactMobile:hover path{
-  fill: #29abe2;
-}
+
 
 .iconEditMobile,.iconDeleteMobile{
   display: flex;
@@ -958,4 +981,84 @@ text-align: left;
 .deleteContactSureButtons button:hover:last-child {
   background-color: rgba(23, 108, 16, 0.45);
   color: white;
+}
+
+
+.addButtonContainer{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.addButtonContainer button{
+  width: 50%;
+  max-width: 100px;
+  height: 100%;
+  padding: 0;
+}
+
+#passwordConfirmError{
+  color: red;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+input:disabled{
+  background-color: #f1f2f3;
+}
+
+.popupGuestUser{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #2a3647;
+  padding: 15px 15px;
+  color: #000;
+  position: fixed;
+  border-radius: 15px;
+  height: 150px;
+  top: 30%;
+  left: 50%;
+  z-index: 9999999;
+transform: translate(-50%, -50%);
+}
+
+.popupButtons{
+  display: flex;
+  margin-top: 15px;
+    gap: 15px;
+}
+
+.popupButtons button{
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 10px;
+
+}
+
+.popupButtons button:hover{
+  background-color: #29abe2;
+  cursor: pointer;
+}
+
+.popupGuestUser span:last-child{
+  margin-top: 15x;
+  color: #29abe2;
+  text-decoration: underline;
+}
+
+.popupGuestUser span:last-child:hover {
+  cursor: pointer;
+  color: #2a3647;
+}
+
+#updateBtn:disabled{
+  background-color: #f1f2f3;
+  color: #d1d1d1;
+  cursor: not-allowed;
 }

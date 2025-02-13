@@ -27,18 +27,18 @@ async function setItem(urlPath, body, logging) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text(); // Für detailliertere Fehlermeldungen
+      const errorText = await response.text(); 
       throw new Error(
         `HTTP error! Status: ${response.status}, Message: ${errorText}`
       );
     }
 
     const data = await response.json();
-    console.log("Contact created:", data);
-    return data; // Gib den erstellten Kontakt zurück
+
+    return data; 
   } catch (error) {
     console.error("Error creating contact:", error);
-    throw error; // Fehler erneut werfen
+    throw error; 
   }
 }
 
@@ -179,5 +179,29 @@ async function checkToken() {
   token = localStorage.getItem("token");
   if (token) {
     return token;
+  }
+}
+
+async function updateUserAccount(url, body) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_URL}${url}/`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Contact updated:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating contact:", error);
   }
 }

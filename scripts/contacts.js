@@ -1,4 +1,3 @@
-
 const CONTACTS_URL = "contacts/";
 let contentHeight;
 let letters = [
@@ -33,6 +32,7 @@ let contacts = [];
 let contactIdCounter = 0;
 let screenSize = [];
 let newContactIdCounter = [0];
+let password;
 
 /**
  * Adds a new contact by displaying the contact addition overlay and making the background opaque.
@@ -44,6 +44,8 @@ async function addNewContact() {
   document
     .getElementById("backGroundOpacityContainer")
     .classList.remove("d-none");
+
+  scrollToContactView();
 }
 
 /**
@@ -63,14 +65,12 @@ function closeAddNewContact() {
  * Creates a new contact object, initializes user contacts if necessary, and then saves the new contact.
  */
 function createContact() {
-
-
   createContactObject();
 
   // contacts[userID].push(contact);
-   closeAddContactPopup();
-   showSuccessOverlay();
-   resetInputFields();
+  closeAddContactPopup();
+  showSuccessOverlay();
+  resetInputFields();
   // saveAndShowContacts(contact.id);
 }
 
@@ -117,24 +117,21 @@ async function createContactObject() {
   let userID = localStorage.getItem("user_id");
 
   let body = JSON.stringify({
-            userID: userID,
-            name: name,
-            phone: tel,
-            email: email,
-            initials: initials,
-            bg_color: bgColor,
+    userID: userID,
+    name: name,
+    phone: tel,
+    email: email,
+    initials: initials,
+    bg_color: bgColor,
   });
-  
-    try {
-    await setItem(CONTACTS_URL, body);
-    
-  } catch (error) {
 
+  try {
+    await setItem(CONTACTS_URL, body);
+    await initContacts();
+  } catch (error) {
     alert("Error creating contact. Please check the console for details.");
   }
 }
-
-
 
 /**
  * Resets the input fields for adding a new contact to empty strings.
@@ -164,8 +161,8 @@ async function initContacts() {
   await showContacts();
   screenSizeUser();
   await updateContacts();
-  setContentContactHeight();
-
+  // setContentContactHeight();
+  startEditUserAccount();
 }
 
 /**
@@ -173,21 +170,17 @@ async function initContacts() {
  */
 
 async function showContacts() {
-
   let letterBox = document.getElementById("letterBox");
   letterBox.innerHTML = "";
 
-    for (let i = 0; i < letters.length; i++) {
-      const letter = letters[i];
-      let filteredContacts = contacts.filter(
-        (contact) => contact["name"].charAt(0).toUpperCase() == letter
-      );
-      filteredContact(filteredContacts, letter);
+  for (let i = 0; i < letters.length; i++) {
+    const letter = letters[i];
+    let filteredContacts = contacts.filter(
+      (contact) => contact["name"].charAt(0).toUpperCase() == letter
+    );
+    filteredContact(filteredContacts, letter);
   }
-  
-
-  }
-
+}
 
 /**
  * Filters and displays contacts that start with a specific letter.
@@ -247,6 +240,7 @@ async function showContact(id) {
   toggleMobileContactView();
   displayContactDetails();
   updateContactView(id);
+  await scrollToContactView();
   showOverlay();
 }
 
@@ -257,6 +251,14 @@ function deselectAllContainers() {
   let allContainers = document.querySelectorAll(".iconNameEmailContainer");
   allContainers.forEach((container) => {
     container.classList.remove("selected");
+  });
+}
+
+function scrollToContactView() {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "smooth",
   });
 }
 
@@ -297,18 +299,17 @@ function displayContactDetails() {
 function updateContactView(id) {
   const index = contacts.findIndex((contact) => contact.id === id);
 
-    const contact = contacts[index];
-    let letter = contact["name"].charAt(0).toUpperCase();
-    let lastNameLetter = getLastLetter(contact["name"]);
+  const contact = contacts[index];
+  let letter = contact["name"].charAt(0).toUpperCase();
+  let lastNameLetter = getLastLetter(contact["name"]);
 
-    document.getElementById("showContact").innerHTML = showContactHTML(
-      contact,
-      letter,
-      lastNameLetter
-    );
-    showEditDeleteMobile(id);
-  }
-
+  document.getElementById("showContact").innerHTML = showContactHTML(
+    contact,
+    letter,
+    lastNameLetter
+  );
+  showEditDeleteMobile(id);
+}
 
 /**
  * Displays the edit and delete options for mobile view.
@@ -335,7 +336,6 @@ function showOverlay() {
  * @param {number} id - The ID of the contact to delete.
  */
 async function deleteContact(id) {
-
   const success = await deleteItem("contacts", id);
 
   if (success) {
@@ -343,22 +343,23 @@ async function deleteContact(id) {
     document.getElementById("contactContainerContact").innerHTML = "";
     hideEditContactMobile();
     disableContactContainer();
-    setTimeout(() => { popupDeleteContact(); }, 2000);
+    setTimeout(() => {
+      popupDeleteContact();
+    }, 2000);
   } else {
     console.error("Fehler beim Löschen des Kontakts.");
-
   }
 }
 
 function deleteContactQuestion(id, name) {
-  let element = document.getElementById("deleteContactSure"); 
-  element.innerHTML = ""; 
-  element.innerHTML += showDeleteQuestion(name, id); 
-  element.classList.remove("d-none"); 
+  let element = document.getElementById("deleteContactSure");
+  element.innerHTML = "";
+  element.innerHTML += showDeleteQuestion(name, id);
+  element.classList.remove("d-none");
 }
 
 function deleteContactSure(bool, id) {
-let element = document.getElementById("deleteContactSure").classList;
+  let element = document.getElementById("deleteContactSure").classList;
   if (bool) {
     deleteContact(id);
   }
@@ -366,17 +367,17 @@ let element = document.getElementById("deleteContactSure").classList;
 }
 
 function popupDeleteContact() {
+  document
+    .getElementById("popUpSuccesfullyDeleted")
+    .classList.add(
+      "overlay-successfullyDeleted",
+      "showoverlay-successfullyDeleted"
+    );
+  setTimeout(() => {
     document
       .getElementById("popUpSuccesfullyDeleted")
-      .classList.add(
-        "overlay-successfullyDeleted",
-        "showoverlay-successfullyDeleted"
-      );
-    setTimeout(() => {
-      document
-        .getElementById("popUpSuccesfullyDeleted")
-        .classList.remove("showoverlay-successfullyDeleted");
-    }, 2000);
+      .classList.remove("showoverlay-successfullyDeleted");
+  }, 2000);
 }
 
 /**
@@ -388,7 +389,6 @@ function editContact(id) {
   const selectedContact = contacts.find((contact) => contact.id === id);
   addNewContactPopUp.innerHTML = editContactHTML(id, selectedContact.name);
 
- 
   if (selectedContact) {
     getEditContact(selectedContact);
   }
@@ -414,7 +414,7 @@ function getEditContact(selectedContact, id) {
     .split(" ")
     .map((word) => word.charAt(0))
     .join("");
-  const bgColor = selectedContact.bgColor;
+  const bgColor = selectedContact.bg_color;
   setProfileContact(initials, bgColor);
   document
     .getElementById("deleteContactButton")
@@ -453,7 +453,9 @@ function closeEditContact() {
   document
     .getElementById("editcontact")
     .classList.remove("showOverlay-addNewContactPopUpContainer");
-  document.getElementById("editbackGroundOpacityContainer").classList.add("d-none");
+  document
+    .getElementById("editbackGroundOpacityContainer")
+    .classList.add("d-none");
   document.getElementById("editname").value = "";
   document.getElementById("editemail").value = "";
   document.getElementById("edittel").value = "";
@@ -470,13 +472,11 @@ async function saveEditContact(id) {
     phone: document.getElementById("edittel").value,
   });
 
-    await updateItem("contacts", id, body);
-    await load_contacts_from_webstorage();
-    await showContacts();
-    // showContact(editedContact.id);
-    closeEditContact();
-  }
-
+  await updateItem("contacts", id, body);
+  await initContacts();
+  // showContact(editedContact.id);
+  closeEditContact();
+}
 
 /**
  * Determines if the current view is on a mobile device based on the screen width.
@@ -528,9 +528,7 @@ function showEditContactMobile() {
   document
     .getElementById("editDeleteContainerMobile")
     .classList.remove("d-none");
-  document
-    .getElementById("editDeleteContainerMobile")
-    .classList.add("d-none");
+  document.getElementById("editDeleteContainerMobile").classList.add("d-none");
 }
 
 /**
@@ -550,7 +548,6 @@ function hideEditContactMobile() {
  */
 async function load_contacts_from_webstorage() {
   contacts = await getItem(CONTACTS_URL);
-
 }
 
 /**
@@ -654,38 +651,148 @@ function ifCheckContact(
   }
 }
 
+// function setContentContactHeight(height) {
+//   const element = document.querySelector(".contentContact");
 
+//   if (isMobile() & !height) {
+//     const inhaltHoehe = element.offsetHeight + 150;
+//     element.style.height = inhaltHoehe + "px";
+//     contentHeight = inhaltHoehe;
+//     console.log(inhaltHoehe);
+//   } else {
+//     element.style.height = height + "px";
+//   }
+// }
 
+// function setPersonLogoPosition() {
+//   const personLogo = document.querySelector(".personLogo");
+//   const editLogo = document.querySelector(".editContactMobile");
 
-function setContentContactHeight(height) {
-  const element = document.querySelector(".contentContact");
+//   if (isMobile()) {
+//     const marginBottom = 660;
+//     const scrollY = window.scrollY;
 
-  if (isMobile() & !height) {
-    const inhaltHoehe = element.offsetHeight + 150;
-    element.style.height = inhaltHoehe + "px";
-    contentHeight = inhaltHoehe;
-    console.log(inhaltHoehe);
+//     const bottomValue = marginBottom + scrollY;
+//     // personLogo.style.top = `${bottomValue}px`;
+//     // editLogo.style.top = `${bottomValue - 50}px`;
+//   }
+// }
+
+// setInterval(setPersonLogoPosition, 300);
+
+// window.addEventListener("resize", () => {
+//   setContentContactHeight();
+//   setTimeout(() => {
+//     console.log("2 Sekunden nach dem Resize (ungefähr).");
+//   }, 2000);
+// });
+
+async function editUserAccount(bool) {
+
+  let userName = document.getElementById("nameLoggedinUser");
+  let userEmail = document.getElementById("emailLoggedinUser");
+  let userPassword = document.getElementById("password");
+
+  let userData = await getItem("user/profile");
+
+  if (userData.id !== 4) {
+    await displayEditUserAccount(bool, userData)
+    userName.value = userData.first_name;
+    userEmail.value = userData.email;
+  } else { 
+    displayGuestUserPopup(true);
+  }
+  scrollToContactView();
+};
+
+function passwordCheck() {
+  let userPasswordConfirm = document.getElementById("passwordConfirm");
+  let userPassword = document.getElementById("password");
+  let updateBtn = document.getElementById("updateBtn");
+  password = userPassword.value;
+
+  if (password) {
+    userPasswordConfirm.removeAttribute("disabled");
+    updateBtn.setAttribute("disabled", true);
+    confirmPassword(updateBtn);
   } else {
-    element.style.height = height + "px";
+    userPasswordConfirm.setAttribute("disabled", true);
   }
-}
-
-
-function setPersonLogoPosition() {
-  const personLogo = document.querySelector(".personLogo");
-
-  if (isMobile()) {
-  const marginBottom = 660;
-  const scrollY = window.scrollY;
-
-  const bottomValue = marginBottom + scrollY;
-  personLogo.style.top = `${bottomValue}px`;
- 
-  }
-
-
 
 }
 
-setInterval(setPersonLogoPosition, 300);
- window.addEventListener('resize', setContentContactHeight); 
+function updateUser() {
+  let userName = document.getElementById("nameLoggedinUser").value;
+  let userEmail = document.getElementById("emailLoggedinUser").value;
+  let userPassword = document.getElementById("password").value;
+  let userPasswordConfirm = document.getElementById("passwordConfirm").value;
+
+  if (!password) {
+    let body = JSON.stringify({
+      first_name: userName,
+      email: userEmail,
+    });
+
+    updateUserAccount("user/profile", body);
+    displayEditUserAccount(false);
+  } else if (userPassword === userPasswordConfirm) {
+    let body = JSON.stringify({
+      first_name: userName,
+      email: userEmail,
+      password: userPassword,
+    });
+    updateUserAccount("user/profile", body);
+    displayEditUserAccount(false);
+  }
+
+
+}
+
+
+async function displayEditUserAccount(bool){
+  let backGroundOpacityContainer = document.getElementById("backGroundOpacityContainer");
+  let popupUserAccount = document.getElementById("editUserAccount");
+  if (bool) {
+    popupUserAccount.classList.remove("d-none");
+    backGroundOpacityContainer.classList.remove("d-none");
+    document.body.classList.add("no-scroll");
+  } else {
+    popupUserAccount.classList.add("d-none");
+    backGroundOpacityContainer.classList.add("d-none");
+    document.body.classList.remove("no-scroll");
+  }
+};
+
+function displayGuestUserPopup(bool) {
+  let displayGuestUser = document.getElementById("popGuestUser");
+
+  if (bool) {
+    displayGuestUser.classList.remove("d-none");
+  } else {
+    displayGuestUser.classList.add("d-none");
+  }
+}
+
+function confirmPassword() {
+  let password = document.getElementById("password").value;
+  let confirmPassword = document.getElementById("passwordConfirm").value;
+  let updateBtn = document.getElementById("updateBtn");
+
+  if (password !== confirmPassword) {
+    document.getElementById("passwordConfirmError").classList.remove("d-none");
+    updateBtn.setAttribute("disabled", true);
+  } else {
+    document.getElementById("passwordConfirmError").classList.add("d-none");
+    updateBtn.removeAttribute("disabled");
+  }
+}
+
+function startEditUserAccount() {
+  if (sessionStorage.getItem("editUser")) {
+    editUserAccount(true);
+    setTimeout(() => {
+      sessionStorage.removeItem("editUser");
+    }, 500);
+  }
+
+}

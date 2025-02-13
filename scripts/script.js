@@ -14,7 +14,7 @@ async function includeHTML() {
     let resp = await fetch(file);
     if (resp.ok) {
       element.innerHTML = await resp.text();
-    }else {
+    } else {
       element.innerHTML = " Page not found";
     }
   }
@@ -23,25 +23,25 @@ async function includeHTML() {
 /**
  * Performs initial render actions including including HTML, restoring selected links, setting initials, and configuring terms back button.
  */
-async function render(){
-await includeHTML();
-restoreSelectedLink();
-initials();
-termsBackButton();
+async function render() {
+  await includeHTML();
+  restoreSelectedLink();
+  initials();
+  termsBackButton();
 }
 
 /**
  * Loads contact information from web storage and updates the global `contacts` object.
  */
-async function load_contacts_from_webstorage(){
+async function load_contacts_from_webstorage() {
   let contactsValue = await getItem('contacts');
-  
+
   if (contactsValue && contactsValue.data && contactsValue.data.value) {
     contacts = JSON.parse(contactsValue.data.value) || {};
   } else {
     contacts = {};
   }
-  
+
   if (!Array.isArray(contacts[userID])) {
     contacts[userID] = [];
   }
@@ -51,7 +51,7 @@ async function load_contacts_from_webstorage(){
  * Fetches tasks for a specific user from storage.
  * @param {string} userID - The user ID for which tasks are being loaded.
  */
-async function loadTasks(){
+async function loadTasks() {
   let userTask = await getItem(`tasks`);
   tasks = JSON.parse(userTask.data || '{}');
   return tasks || [];
@@ -60,10 +60,10 @@ async function loadTasks(){
 /**
  * Retrieves and returns task categories from storage.
  */
-async function createTaskCategory(){
+async function createTaskCategory() {
   let taskCategory = await getItem('newcategory');
   let categorys = JSON.parse(taskCategory.data.value);
-  return categorys; 
+  return categorys;
 }
 
 // /**
@@ -113,7 +113,7 @@ function checkUser() {
 
   if (loginStatus) {
     window.location.href = '/assets/templates/summary.html';
-  }  if (!loginStatus){
+  } if (!loginStatus) {
     window.location.href = '/assets/templates/login.html';
   }
 }
@@ -137,12 +137,12 @@ function restoreSelectedLink() {
 function sidebarBG(linkId) {
   let links = document.querySelectorAll('.links');
   links.forEach(link => {
-      link.classList.remove('active');
+    link.classList.remove('active');
   });
   let selectedLink = document.getElementById(linkId);
   if (selectedLink) {
-      selectedLink.classList.add('active');
-      addActiveStyle(linkId);
+    selectedLink.classList.add('active');
+    addActiveStyle(linkId);
   }
 }
 
@@ -153,44 +153,44 @@ function sidebarBG(linkId) {
 function sidebarBGTerms(linkId) {
   let links = document.querySelectorAll('.linksBottomStyle');
   links.forEach(link => {
-      link.classList.remove('active');
+    link.classList.remove('active');
   });
 
   let selectedLink = document.getElementById(linkId);
   if (selectedLink) {
-      selectedLink.classList.add('active');
-      addActiveStyle(linkId);
+    selectedLink.classList.add('active');
+    addActiveStyle(linkId);
   }
 }
 
 /**
  * Toggles the visibility of header links in a pop-up based on user interaction.
  */
-function openOrCloseHeaderLinksPopUp(){
-  if(isClicked){
-   document.getElementById('headerLinkPopUp').classList.remove('d-none');
-   isClicked = false;
-  }else{
-   document.getElementById('headerLinkPopUp').classList.add('d-none');
-   isClicked = true;
+function openOrCloseHeaderLinksPopUp() {
+  if (isClicked) {
+    document.getElementById('headerLinkPopUp').classList.remove('d-none');
+    isClicked = false;
+  } else {
+    document.getElementById('headerLinkPopUp').classList.add('d-none');
+    isClicked = true;
   }
- }
+}
 
 /**
  * Extracts and sets the user's initials based on their name stored in local storage.
  */
- function initials(){
-    let name = localStorage.getItem("name")
+function initials() {
+  let name = localStorage.getItem("name")
 
-    if(name){
-      let letters = name.split(' ');
+  if (name) {
+    let letters = name.split(' ');
 
-      let initials = letters.map(function(letters) {
-        return letters.charAt(0).toUpperCase();
-      });
-      setInitials(initials);
-    }
- }
+    let initials = letters.map(function (letters) {
+      return letters.charAt(0).toUpperCase();
+    });
+    setInitials(initials);
+  }
+}
 
 /**
  * Sets the user's initials in the header element.
@@ -199,9 +199,9 @@ function openOrCloseHeaderLinksPopUp(){
 function setInitials(initials) {
   const initialsHeader = document.getElementById("headerInitial");
   if (initialsHeader) { // Überprüft, ob das Element gefunden wurde
-      initials = initials.join('');
-      initials = initials.replace(/[^A-Za-z]/g, '');
-      initialsHeader.innerHTML = initials;
+    initials = initials.join('');
+    initials = initials.replace(/[^A-Za-z]/g, '');
+    initialsHeader.innerHTML = initials;
   }
 }
 
@@ -209,29 +209,29 @@ function setInitials(initials) {
 /**
  * Logs out the user by clearing relevant information from local storage and session storage.
  */
- function logout(){
-    localStorage.removeItem("user");
-    localStorage.removeItem("name");
-    sessionStorage.removeItem("welcome")
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
+function logout() {
+  localStorage.removeItem("user");
+  localStorage.removeItem("name");
+  sessionStorage.removeItem("welcome")
+  localStorage.removeItem("token");
+  localStorage.removeItem("user_id");
 
- }
+}
 
 /**
  * Configures the back button on terms pages based on the user's login status.
  */
- function termsBackButton(){
+function termsBackButton() {
   let user = localStorage.getItem("user")
   let path = "/assets/templates/"
   let backArrow = document.getElementById("backArrow")
-  
-  if(window.location.pathname.includes('terms')){
-    if(!user){
-      backArrow.href = path+"login.html"
-    }else{ backArrow.href = path+"summary.html"}
+
+  if (window.location.pathname.includes('terms')) {
+    if (!user) {
+      backArrow.href = path + "login.html"
+    } else { backArrow.href = path + "summary.html" }
   }
- }
+}
 
 
 /**
@@ -240,10 +240,10 @@ function setInitials(initials) {
 document.addEventListener('DOMContentLoaded', () => {
   const contactElements = document.querySelectorAll('.assignedContactsContainer');
   contactElements.forEach(element => {
-      element.addEventListener('click', (event) => {
-          const { initials, bgColor, name, checkboxId } = element.dataset; 
-           toggleContactSelection(initials, bgColor, name, checkboxId, event);
-      });
+    element.addEventListener('click', (event) => {
+      const { initials, bgColor, name, checkboxId } = element.dataset;
+      toggleContactSelection(initials, bgColor, name, checkboxId, event);
+    });
   });
   render();
   initials();
@@ -251,16 +251,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputs = document.querySelectorAll('.changeColor');
 
   inputs.forEach(input => {
-      input.addEventListener('input', function() {
-          if (this.value) {
-              this.style.color = 'black';
-          } else {
-              this.style.color = 'grey';
-          }
-      });
+    input.addEventListener('input', function () {
+      if (this.value) {
+        this.style.color = 'black';
+      } else {
+        this.style.color = 'grey';
+      }
+    });
 
-      // set initiale color
-      input.style.color = input.value ? 'black' : 'grey';
+    // set initiale color
+    input.style.color = input.value ? 'black' : 'grey';
   });
 });
 
+function editLoggedinUser() {
+  sessionStorage.setItem('editUser', true);
+  sessionStorage.setItem('selectedMenu', 4);
+  window.location.href = '/assets/templates/contacts.html';
+}
+
+
+function openMobileSidebar(bool) {
+  const mobileMenu = document.querySelector(".sideBarBox");
+  if (mobileMenu) { 
+    mobileMenu.style.display = bool ? "block" : "none";
+  }
+}
+
+document.addEventListener('click', function (event) {
+  const mobileMenu = document.querySelector(".sideBarBox");
+  const menuButton = document.getElementById('menuButton'); 
+
+  if (!mobileMenu || !menuButton) {
+    return;
+  }
+
+  const isClickInsideMenu = mobileMenu.contains(event.target);
+  const isClickOnButton = menuButton.contains(event.target);
+
+  if (!isClickInsideMenu && !isClickOnButton && window.innerWidth < 800) {
+    openMobileSidebar(false); 
+  }
+});
+
+function handleResize() {
+  const mobileMenu = document.querySelector(".sideBarBox");
+  if (window.innerWidth > 800 && mobileMenu.style.display === "none") {
+    mobileMenu.style.display = "block";
+  }
+}
+
+window.addEventListener("resize", handleResize);
