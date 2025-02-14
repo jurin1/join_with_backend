@@ -693,9 +693,13 @@ function mobileCategory(event, id) {
  */
 async function newCategoryHTMLOpen(categorys, event, id) {
     event.stopPropagation();
-    currentDraggedElement = cards.find(card => card.id === id);
-    currentDraggedElement.category = categorys;
-    // await setItem('tasks', tasks);
+
+    let body = JSON.stringify({
+        status: categorys,
+    });
+     
+
+    await updateItem('tasks', id, body);
     updateHTML();
 }
 
