@@ -115,7 +115,7 @@ function showContactsHTML(filteredContact, bgColor, letter, lastNameLetter) {
   
   function showContactHTML(contact, letter, lastNameLetter) {
     return `
-    <div id="contactContainerContact" class="contactContainerContact overlay-contactContainerContact">
+    <div id="contactContainerContact" class="contactContainerContact overlay-contactContainerContact showOverlay-contactContainerContact">
       <div class="contactContainerContactIconName">
         <div id="contactContainerContactIcon"class="contactContainerContactIcon"style="background-color: ${contact.bg_color}">${letter}${lastNameLetter}</div>
         <div class="nameEditDelete">

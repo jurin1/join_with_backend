@@ -534,7 +534,7 @@ function changeContactView() {
   contactContainerView.style.display = "block";
   contactContainerView.style.width = "100vw";
   // document.getElementById("editContactMobile").classList.remove("d-none");
-  setContentContactHeight(window.innerHeight);
+  // setContentContactHeight(window.innerHeight);
 }
 
 /**
