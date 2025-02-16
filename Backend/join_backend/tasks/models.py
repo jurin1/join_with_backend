@@ -34,7 +34,7 @@ class Task(models.Model):
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
     category = models.CharField(max_length=100, blank=True)
     contact = models.ForeignKey(Contact, on_delete=models.SET_NULL, blank=True, null=True, related_name='tasks') # ForeignKey verwenden
-    subtasks_json = models.TextField(default='[]')  # Subtasks als Text speichern
+    subtasks_json = models.TextField(default='[]')  
 
     def __str__(self):
         return self.headline

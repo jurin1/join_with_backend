@@ -24,13 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t1h8$s8d6f9sf^4e=m*-hb6o*1lo1((jas0k=xutk_!$@(0y=m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
+DEBUG = 'true'
 
 
 
-if DEBUG:
-    ALLOWED_HOSTS = []  # Alle Hostnamen im Debug-Modus akzeptieren
-    CORS_ALLOWED_ORIGINS = [
+
+ALLOWED_HOSTS = ["*"]  
+CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",  
         "http://127.0.0.1:3000",
         "http://localhost:8000",  
@@ -38,12 +38,7 @@ if DEBUG:
         "http://localhost:5500", 
         "http://127.0.0.1:5500", 
     ]
-else:
-    ALLOWED_HOSTS_PROD = os.getenv('ALLOWED_HOSTS_PROD', '').split(',')
-    ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_PROD if host.strip()]
-    CORS_ALLOWED_ORIGINS_PROD = os.getenv('CORS_ALLOWED_ORIGINS_PROD', '').split(',')
-    CORS_ALLOWED_ORIGINS = [domain.strip() for domain in CORS_ALLOWED_ORIGINS_PROD if domain.strip()]
-    CORS_ALLOW_ALL_ORIGINS = False
+
 
 
 # Application definition

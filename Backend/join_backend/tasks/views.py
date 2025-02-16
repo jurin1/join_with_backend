@@ -27,7 +27,7 @@ def login_user(request):
         token, _ = authtoken_models.Token.objects.get_or_create(user=user)
         return Response({'token': token.key, 'name': user.first_name, 'userID': user.id})
     else:
-        return Response({'error': 'Ungültige Anmeldeinformationen'}, status=400)
+        return Response({'error': 'UngÃ¼ltige Anmeldeinformationen'}, status=400)
 
 
 @api_view(['POST'])
@@ -84,11 +84,11 @@ class UrgentUpcomingTaskList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        # Filtere Tasks, die nicht "done" sind und die Priorität "urgent" haben
+        # Filtere Tasks, die nicht "done" sind und die PrioritÃ¤t "urgent" haben
         queryset = Task.objects.filter(
             user=user,
             priority='urgent',
-        ).exclude(status='done').order_by('due_date') # Sortiere nach Fälligkeitsdatum
+        ).exclude(status='done').order_by('due_date') # Sortiere nach FÃ¤lligkeitsdatum
 
         return queryset
     
@@ -103,9 +103,28 @@ def health_check(request):
     """
     return Response({'status': 'ok'}, status=status.HTTP_200_OK)
 
-class UserDetailView(generics.RetrieveUpdateAPIView):
+class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+
+        password = request.data.get('password')
+        if password:
+            instance.set_password(password) 
+            instance.save() 
+            return Response({'message': 'Benutzerprofil und Passwort erfolgreich aktualisiert.'})
+
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)

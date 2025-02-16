@@ -96,6 +96,29 @@ main {
   border: none;
 }
 
+.btn-editTask{
+  display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 160px;
+    height: 48px;
+    border-radius: 10px;
+    padding: 8px 16px 8px 16px;
+    font-size: 21px;
+    font-weight: 700;
+    background-color: #2a3647;
+    color: white;
+    gap: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-editTask:hover{
+  background-color: #29abe2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
 .btn-AddTask:hover {
   background-color: #29abe2;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
@@ -451,6 +474,7 @@ input[type="checkbox"]:before {
   justify-content: flex-end;
   align-items: center;
   width: 90%;
+  gap: 15px
 }
 
 .delete {
