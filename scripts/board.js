@@ -716,7 +716,10 @@ function renderSubTaskInBoard(infoArrayCard) {
     subtasksArrayEditTask = [];
     for (let i = 0; i < infoArrayCard['subtasks'].length; i++) {
         let nameOfSubTask = infoArrayCard['subtasks'][i]['name'];
-        subtasksArrayEditTask.push(infoArrayCard['subtasks'][i]);
+        subtasksArrayEditTask.push({
+            ...infoArrayCard['subtasks'][i], 
+            taskId: infoArrayCard.id 
+        });
     }
     loadSubOfArray();
 }
@@ -730,7 +733,7 @@ function loadSubOfArray() {
     for (let j = 0; j < subtasksArrayEditTask.length; j++) {
         let subName = subtasksArrayEditTask[j]['name'];
         let subID = j;
-        let taskID = subtasksArrayEditTask[j]['taskID'];
+        let taskID = subtasksArrayEditTask[j]['taskId'];
         console.log(subName);
         renderTask.innerHTML += loadSubOfArrayHTML(subName, subID, taskID);
     }
@@ -772,10 +775,9 @@ function closeEditSubTaskInBoardCard() {
  * @param {string} taskID - The unique identifier of the task to which the subtask belongs.
  */
 function saveEditeSubTaskInBoardCard(subID, taskID) {
-    let subTask = subtasksArrayEditTask.find(subtasksArrayEditTask => subtasksArrayEditTask.subID === subID);
-    console.log(subTask);
+    
     let valueOfInput = document.getElementById('editSubTaskInput').value;
-    subTask.name = valueOfInput;
+    subtasksArrayEditTask[subID]['name'] = valueOfInput;
     loadSubOfArray();
     closeEditSubTaskInBoardCard();
     saveNewSubTaskToBoard(subID, taskID);
@@ -797,8 +799,8 @@ function saveNewSubTaskToBoard(subID, taskID) {
  * @param {string} taskID - The unique identifier of the task from which the subtask will be deleted.
  */
 function deleteSubTaskInBoardCard(subID, taskID) {
-    let index = subtasksArrayEditTask.findIndex(subtasksArrayEditTask => subtasksArrayEditTask.subID === subID);
-    if (index !== -1) { // Stelle sicher, dass das Element gefunden wurde
+    let index = subID;
+    if (index !== -1) { 
         subtasksArrayEditTask.splice(index, 1);
     }
     loadSubOfArray();
